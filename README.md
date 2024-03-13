@@ -1,1 +1,1 @@
-# Car Parking Managament System
+# Car Parking Management System
