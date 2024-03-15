@@ -30,18 +30,11 @@ Our database can explained with the following Entity Relationship Diagram. Pleas
 
 The timeline is as follows:
 
-16th March: Plan out exact functionality and rough frontend design.
-
-17th March: Start programming frontend with React.js, start designing database queries.
-
-23rd March: Have frontend ready, have the database set up and hosted, with queries for all functionalities ready. Crosscheck work to ensure compatibility.
-
-24th March: Start developing the Express.js API to link the frontend and backend.
-
-31st March: Finish developing API. Have all endpoints tested in postman and well commented for use in frontend. Start calling API from frontend and completing the linking.
-
-2nd April: Finish linking the frontend and backend, iron out any last minute bugs or discrepancies.
-
-3rd April to 5th April: Ask for feedback in office hours and from TA to improve project and make final changes.
-
-5th April: Submit project by 6pm or sooner.
+- 16th March: Plan out exact functionality and rough frontend design.
+- 17th March: Start programming frontend with React.js, start designing database queries.
+- 23rd March: Have frontend ready, have the database set up and hosted, with queries for all functionalities ready. Crosscheck work to ensure compatibility.
+- 24th March: Start developing the Express.js API to link the frontend and backend.
+- 31st March: Finish developing API. Have all endpoints tested in postman and well commented for use in frontend. Start calling API from frontend and completing the linking.
+- 2nd April: Finish linking the frontend and backend, iron out any last minute bugs or discrepancies.
+- 3rd April to 5th April: Ask for feedback in office hours and from TA to improve project and make final changes.
+- 5th April: Submit project by 6pm or sooner.
