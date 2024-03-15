@@ -28,8 +28,6 @@ Our database can explained with the following Entity Relationship Diagram. Pleas
 
 ## Project Timeline
 
-The timeline is as follows:
-
 - 16th March: Plan out exact functionality and rough frontend design.
 - 17th March: Start programming frontend with React.js, start designing database queries.
 - 23rd March: Have frontend ready, have the database set up and hosted, with queries for all functionalities ready. Crosscheck work to ensure compatibility.
