@@ -7,7 +7,7 @@ const GetStartedButton = () => {
     const navigate = useNavigate();
 
     const handleClick = () => {
-        navigate('/signup');
+        navigate('/enterpassword');
     };
 
     return (
