@@ -13,7 +13,7 @@ const GetStartedButton = () => {
     return (
         <div className="OrderButtonLanding">
             <div className="d-grid gap-2 col-4 mx-auto">
-                <button type="submit" className="btn orderNowButton rounded-pill p-2 btn-primary" onClick={handleClick}>
+                <button type="submit" className="btn rounded-pill p-2 btn-primary" onClick={handleClick}>
                     <ArrowRight color="white" size={48} />
                     <span>Continue As Manager</span> {/* Make sure this text is inside the button */}
                 </button>
