@@ -9,157 +9,173 @@ USE CPMS;
 
 -- SECTION 1: SQL Data Definition Language (DDL)
 
--- VehicleClass Table
+-- VehicleClass Table (ISA Super Entity)
 CREATE TABLE VehicleClass (
-    Plate# VARCHAR(10) PRIMARY KEY,
-    WeightClass CHAR(1)
+    PlateNumber VARCHAR(10) NOT NULL,
+    WeightClass CHAR(1),
+    PRIMARY KEY (PlateNumber)
 );
 
+/*
 -- WeightRate Table
 CREATE TABLE WeightRate (
-    WeightClass CHAR(1) PRIMARY KEY,
+    WeightClass CHAR(1),
     HourlyRate INT,
-    FOREIGN KEY (WeightClass) REFERENCES VehicleClass
-);
+    PRIMARY KEY (WeightClass),
+    FOREIGN KEY (WeightClass) REFERENCES VehicleClass(WeightClass)
+); */
 
-
--- PrivateCar Table
-CREATE TABLE PrivateCar (
-    Plate# VARCHAR(10) PRIMARY KEY,
-    Membership VARCHAR(12),
-    FOREIGN KEY (Plate#) REFERENCES VehicleClass
-);
-
--- HeavyDuty Table
-CREATE TABLE HeavyDuty (
-    Plate# VARCHAR(10) PRIMARY KEY,
-    CompanyName VARCHAR(255),
-    FOREIGN KEY (Plate#) REFERENCES VehicleClass
-);
-
--- Maintenance Table
-CREATE TABLE Maintenance (
-    Plate# VARCHAR(10) PRIMARY KEY,
-    WorkOrder# VARCHAR(12),
-    FOREIGN KEY (Plate#) REFERENCES VehicleClass
-);
-
--- Payment Table
-CREATE TABLE Payment (
-    ID VARCHAR(10) PRIMARY KEY,
-    Method VARCHAR(255),
-    Plate# VARCHAR(10),
-    ExitGate# INT,
-    FOREIGN KEY (Plate#) REFERENCES VehicleClass,
-    FOREIGN KEY (ExitGate#) REFERENCES ExitGate
-);
-
--- Enter Table
-CREATE TABLE Enter (
-    DateTime DATETIME,
-    Plate# VARCHAR(10),
-    EntryGate# INT,
-    PRIMARY KEY (EntryGate#, Plate#),
-    FOREIGN KEY (Plate#) REFERENCES VehicleClass,
-    FOREIGN KEY (EntryGate#) REFERENCES EntryGate
-);
-
--- Exit Table
-CREATE TABLE Exit (
-    DateTime DATETIME,
-    Plate# VARCHAR(10),
-    ExitGate# INT,
-    PRIMARY KEY (ExitGate#, Plate#),
-    FOREIGN KEY (Plate#) REFERENCES VehicleClass,
-    FOREIGN KEY (ExitGate#) REFERENCES ExitGate
-);
-
--- EntryGate Table
+-- EntryGate Table (Entity)
 CREATE TABLE EntryGate (
-    EntryGate# INT PRIMARY KEY,
-    StatusIsActive INT
+    EntryGateID INT NOT NULL,
+    StatusIsActive INT,
+    PRIMARY KEY (EntryGateID)
 );
 
--- ExitGate Table
+-- ExitGate Table (Entity)
 CREATE TABLE ExitGate (
-    ExitGate# INT PRIMARY KEY,
-    StatusIsActive INT
+    ExitGateID INT NOT NULL,
+    StatusIsActive INT,
+    PRIMARY KEY (ExitGateID)
 );
 
--- ZoneType Table
-CREATE TABLE ZoneType (
-    ZoneID INT PRIMARY KEY,
-    ZoneType INT,
-    FilledSlots INT,
-    RemainingSlots INT,
-    Address VARCHAR(255),
-    Zip CHAR(6),
-    FOREIGN KEY (Address, Zip) REFERENCES Tower
+-- PrivateCar Table (ISA Sub Entity)
+CREATE TABLE PrivateCar (
+    PlateNumber VARCHAR(10) NOT NULL,
+    Membership VARCHAR(12),
+    PRIMARY KEY (PlateNumber),
+    FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber)
 );
 
--- TypeSlots Table
-CREATE TABLE TypeSlots (
-    ZoneType INT PRIMARY KEY,
-    TotalSlots INT,
-    FOREIGN KEY (ZoneType) REFERENCES ZoneType
+-- HeavyDuty Table (ISA Sub Entity)
+CREATE TABLE HeavyDuty (
+    PlateNumber VARCHAR(10) NOT NULL,
+    CompanyName VARCHAR(255),
+    PRIMARY KEY (PlateNumber),
+    FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber)
 );
 
--- ParkingSlot Table
-CREATE TABLE ParkingSlot (
-    ID VARCHAR(4),
-    ZoneID INT,
-    PRIMARY KEY (ID, ZoneID),
-    FOREIGN KEY (ZoneID) REFERENCES ZoneType(ZoneID)
+-- Maintenance Table (ISA Sub Entity)
+CREATE TABLE Maintenance (
+    PlateNumber VARCHAR(10) NOT NULL,
+    WorkOrderID VARCHAR(12),
+    PRIMARY KEY (PlateNumber),
+    FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber)
 );
 
--- Occupy Table
-CREATE TABLE Occupy (
-    ID VARCHAR(4),
-    ZoneID INT,
-    Plate# VARCHAR(10),
-    PRIMARY KEY (ID, ZoneID, Plate#),
-    FOREIGN KEY (ID) REFERENCES ParkingSlot(ID),
-    FOREIGN KEY (ZoneID) REFERENCES ZoneType(ZoneID),
-    FOREIGN KEY (Plate#) REFERENCES VehicleClass(Plate#)
+-- Payment Table (Entity)
+CREATE TABLE Payment (
+    ID VARCHAR(10) NOT NULL,
+    Method VARCHAR(255),
+    PlateNumber VARCHAR(10),
+    ExitGateID INT,
+    PRIMARY KEY (ID),
+    FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber),
+    FOREIGN KEY (ExitGateID) REFERENCES ExitGate(ExitGateID)
+);
+
+-- Enters Table (Relationship)
+CREATE TABLE Enters (
+    DateTime DATETIME,
+    EntryGateID INT,
+    PlateNumber VARCHAR(10),
+    PRIMARY KEY (EntryGateID, PlateNumber),
+    FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber),
+    FOREIGN KEY (EntryGateID) REFERENCES EntryGate(EntryGateID)
+);
+
+-- Exits Table (Relationship)
+CREATE TABLE Exits (
+    DateTime DATETIME,
+    ExitGateID INT,
+    PlateNumber VARCHAR(10),
+    PRIMARY KEY (ExitGateID, PlateNumber),
+    FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber),
+    FOREIGN KEY (ExitGateID) REFERENCES ExitGate(ExitGateID)
 );
 
 -- BranchClient Table
 CREATE TABLE BranchClient (
-    Branch# VARCHAR(12) PRIMARY KEY,
+    BranchID VARCHAR(12) NOT NULL,
     ClientName VARCHAR(255),
-    ClientType CHAR(1)
+    ClientType CHAR(1),
+    PRIMARY KEY (BranchID)
 );
 
+/*
 -- BranchCap Table
 CREATE TABLE BranchCap (
-    ClientType CHAR(1) PRIMARY KEY,
+    ClientType CHAR(1),
     ParkingCap INT,
-    FOREIGN KEY (ClientType) REFERENCES BranchClient
-);
+    PRIMARY KEY (ClientType),
+    FOREIGN KEY (ClientType) REFERENCES BranchClient(ClientType)
+); */
 
--- Tower Table
-CREATE TABLE Tower (
-    Address VARCHAR(255),
-    Zip CHAR(6),
-    FilledSlots INT,
-    RemainingSlots INT,
-    Branch# VARCHAR(12),
-    PRIMARY KEY (Address, Zip),
-    FOREIGN KEY (Branch#) REFERENCES BranchClient(Branch#)
-);
-
--- Staff Table
+-- Staff Table (Entity)
 CREATE TABLE Staff (
-    EmployeeID INT PRIMARY KEY,
+    EmployeeID INT NOT NULL,
     FullName VARCHAR(255),
-    Telephone INT,
+    Telephone CHAR(10),
     email VARCHAR(255) UNIQUE,
     Shift VARCHAR(255),
     StartDate DATE,
-    Branch# VARCHAR(12),
-    FOREIGN KEY (Branch#) REFERENCES BranchClient(Branch#)
+    BranchID VARCHAR(12),
+    PRIMARY KEY (EmployeeID),
+    FOREIGN KEY (BranchID) REFERENCES BranchClient(BranchID)
 );
 
+-- Tower Table (Entity)
+CREATE TABLE Tower (
+    Address VARCHAR(255) NOT NULL,
+    Zip CHAR(6) NOT NULL,
+    FilledSlots INT,
+    RemainingSlots INT,
+    BranchID VARCHAR(12),
+    PRIMARY KEY (Address, Zip),
+    FOREIGN KEY (BranchID) REFERENCES BranchClient(BranchID)
+);
+
+-- ParkingZone, i.e. Zone Table (Entity)
+CREATE TABLE ParkingZone (
+    ParkingZoneID INT NOT NULL,
+    ParkingZoneType INT NOT NULL,
+    FilledSlots INT,
+    RemainingSlots INT,
+    Address VARCHAR(255),
+    Zip CHAR(6),
+    PRIMARY KEY (ParkingZoneID, ParkingZoneType),
+    FOREIGN KEY (Address, Zip) REFERENCES Tower(Address, Zip)
+);
+
+-- TypeSlots Table (Not in ERD)
+CREATE TABLE TypeSlots (
+    ParkingZoneID INT,
+    TotalSlots INT,
+    PRIMARY KEY (ParkingZoneID),
+    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID)
+);
+
+/* SHOULD BE PARKING SLOT COMPRISES */
+-- ParkingSlot Table (Weak Entity Set)
+CREATE TABLE ParkingSlot (
+    ID VARCHAR(4),
+    ParkingZoneID INT,
+    PRIMARY KEY (ID, ParkingZoneID),
+    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID)
+);
+
+-- Occupy Table (Relationship)
+CREATE TABLE Occupy (
+    ID VARCHAR(4),
+    ParkingZoneID INT,
+    PlateNumber VARCHAR(10),
+    PRIMARY KEY (ID, ParkingZoneID, PlateNumber),
+    FOREIGN KEY (ID) REFERENCES ParkingSlot(ID),
+    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID),
+    FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber)
+);
+
+/*
 -- SECTION 2: INSERT STATEMENTS
 
 -- VehicleClass Table
@@ -174,7 +190,7 @@ INSERT INTO WeightRate VALUES ('A', 10);
 INSERT INTO WeightRate VALUES ('B', 15);
 INSERT INTO WeightRate VALUES ('C', 20);
 INSERT INTO WeightRate VALUES ('D', 25);
-INSERT INTO WeightRate VALUES ('E', 30);
+INSERT INTO WeightRate VALUES ('E', 30); 
 
 -- PrivateCar Table
 INSERT INTO PrivateCar VALUES ('PLATE1234', 'MEM123');
@@ -204,19 +220,19 @@ INSERT INTO Payment VALUES ('ID345', 'Online', 'PLATE3456', 3);
 INSERT INTO Payment VALUES ('ID456', 'Check', 'PLATE4567', 4);
 INSERT INTO Payment VALUES ('ID567', 'Mobile', 'PLATE5678', 5);
 
--- Enter Table
-INSERT INTO Enter VALUES ('2023-01-01 08:00:00', 'PLATE1234', 1);
-INSERT INTO Enter VALUES ('2023-01-02 09:00:00', 'PLATE2345', 2);
-INSERT INTO Enter VALUES ('2023-01-03 10:00:00', 'PLATE3456', 3);
-INSERT INTO Enter VALUES ('2023-01-04 11:00:00', 'PLATE4567', 4);
-INSERT INTO Enter VALUES ('2023-01-05 12:00:00', 'PLATE5678', 5);
+-- Enters Table
+INSERT INTO Enters VALUES ('2023-01-01 08:00:00', 'PLATE1234', 1);
+INSERT INTO Enters VALUES ('2023-01-02 09:00:00', 'PLATE2345', 2);
+INSERT INTO Enters VALUES ('2023-01-03 10:00:00', 'PLATE3456', 3);
+INSERT INTO Enters VALUES ('2023-01-04 11:00:00', 'PLATE4567', 4);
+INSERT INTO Enters VALUES ('2023-01-05 12:00:00', 'PLATE5678', 5);
 
--- Exit Table
-INSERT INTO Exit VALUES ('2023-01-01 18:00:00', 'PLATE1234', 1);
-INSERT INTO Exit VALUES ('2023-01-02 19:00:00', 'PLATE2345', 2);
-INSERT INTO Exit VALUES ('2023-01-03 20:00:00', 'PLATE3456', 3);
-INSERT INTO Exit VALUES ('2023-01-04 21:00:00', 'PLATE4567', 4);
-INSERT INTO Exit VALUES ('2023-01-05 22:00:00', 'PLATE5678', 5);
+-- Exits Table
+INSERT INTO Exits VALUES ('2023-01-01 18:00:00', 'PLATE1234', 1);
+INSERT INTO Exits VALUES ('2023-01-02 19:00:00', 'PLATE2345', 2);
+INSERT INTO Exits VALUES ('2023-01-03 20:00:00', 'PLATE3456', 3);
+INSERT INTO Exits VALUES ('2023-01-04 21:00:00', 'PLATE4567', 4);
+INSERT INTO Exits VALUES ('2023-01-05 22:00:00', 'PLATE5678', 5);
 
 -- EntryGate Table
 INSERT INTO EntryGate VALUES (1, 1);
@@ -232,12 +248,12 @@ INSERT INTO ExitGate VALUES (3, 1);
 INSERT INTO ExitGate VALUES (4, 1);
 INSERT INTO ExitGate VALUES (5, 1);
 
--- ZoneType Table
-INSERT INTO ZoneType VALUES (1, 1, 20, 30, 'Address1', 'Zip1');
-INSERT INTO ZoneType VALUES (2, 2, 25, 25, 'Address2', 'Zip2');
-INSERT INTO ZoneType VALUES (3, 3, 30, 20, 'Address3', 'Zip3');
-INSERT INTO ZoneType VALUES (4, 4, 4, 15, 35, 'Address4', 'Zip4');
-INSERT INTO ZoneType VALUES (5, 5, 10, 40, 'Address5', 'Zip5');
+-- ParkingZoneType Table
+INSERT INTO ParkingZone VALUES (1, 1, 20, 30, 'Address1', 'Zip1');
+INSERT INTO ParkingZone VALUES (2, 2, 25, 25, 'Address2', 'Zip2');
+INSERT INTO ParkingZone VALUES (3, 3, 30, 20, 'Address3', 'Zip3');
+INSERT INTO ParkingZone VALUES (4, 4, 4, 15, 35, 'Address4', 'Zip4');
+INSERT INTO ParkingZone VALUES (5, 5, 10, 40, 'Address5', 'Zip5');
 
 -- TypeSlots Table
 INSERT INTO TypeSlots VALUES (1, 50);
@@ -291,4 +307,4 @@ INSERT INTO Staff VALUES (3, 'Mike Brown', 3456789012, 'mbrown@example.com', 'Ni
 INSERT INTO Staff VALUES (4, 'Sara White', 4567890123, 'swhite@example.com', 'Morning',
 '2023-04-01', 'BR004');
 INSERT INTO Staff VALUES (5, 'Alex Green', 5678901234, 'agreen@example.com', 'Evening',
-'2023-05-01', 'BR005');
+'2023-05-01', 'BR005'); */
