@@ -7,6 +7,7 @@ import SelectParkingLot from './Home/SelectParkingLot';
 import Viewreservations from './Home/ViewReservations';
 import ManagementHome from './Manager/ManagementHome';
 import ManageEmployees from './Manager/ManageEmployees';
+import ManageStats from './Manager/ManageStats';
 
 function App() {
   return (
@@ -33,6 +34,10 @@ function App() {
 
       <Routes>
         <Route path="/manageemployees" element={<ManageEmployees />} />
+      </Routes>
+
+      <Routes>
+        <Route path="/managestats" element={<ManageStats />} />
       </Routes>
     </Router>
   );

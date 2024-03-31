@@ -8,7 +8,7 @@ const ManagementHome = () => {
     }
 
     const handleStats = () => {
-        
+        navigate('/managestats');
     }
 
     return (
