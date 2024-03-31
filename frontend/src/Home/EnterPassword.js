@@ -12,7 +12,7 @@ function EnterPassword() {
     const handleSubmit = (event) => {
         event.preventDefault();
         if (password === savedPassword) {
-            navigate('/'); // navigate to home page
+            navigate('/managementpanel'); // navigate to home page
         } else {
             setError('Incorrect password');
         }
