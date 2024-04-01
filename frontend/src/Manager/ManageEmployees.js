@@ -41,7 +41,10 @@ const ManageEmployees = () => {
             <AddEmployeesButton />
             <div className="d-flex flex-column align-items-center">
                 {employees.map(employee => (
-                    <Card style={{ width: '100%', marginBottom: '10px' }} key={employee.id}>
+                    <Card style={{ width: '100%', marginBottom: '10px', transition: 'transform .2s', cursor: 'pointer' }} key={employee.id}
+                        onMouseOver={(e) => e.currentTarget.style.transform = 'scale(1.02)'}
+                        onMouseOut={(e) => e.currentTarget.style.transform = 'scale(1)'}
+                    >
                         <Card.Body>
                             <Card.Title>{employee.name}</Card.Title>
                             <ListGroup variant="flush">
