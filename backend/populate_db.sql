@@ -102,23 +102,23 @@ INSERT INTO BranchClient VALUES ('BR004', 'Client4', 'D');
 INSERT INTO BranchClient VALUES ('BR005', 'Client5', 'E');
 
 -- Tower Table
-INSERT INTO Tower VALUES ('123 Main St', 'A1B2C3', 61, 'BR001');
-INSERT INTO Tower VALUES ('456 Oak Rd', 'D4E5F6', 66, 'BR002');
-INSERT INTO Tower VALUES ('456 Oak Rd', 'G7H8I9', 38, 'BR003');
-INSERT INTO Tower VALUES ('101 River Ln', 'J1K2L3', 55, 'BR004');
-INSERT INTO Tower VALUES ('202 Lake St', 'M4N5O6', 48, 'BR005');
+INSERT INTO Tower VALUES ('100', '123 Main St', 'A1B2C3', 61, 'BR001');
+INSERT INTO Tower VALUES ('200', '456 Oak Rd', 'D4E5F6', 66, 'BR002');
+INSERT INTO Tower VALUES ('300', '456 Oak Rd', 'G7H8I9', 38, 'BR003');
+INSERT INTO Tower VALUES ('400', '101 River Ln', 'J1K2L3', 55, 'BR004');
+INSERT INTO Tower VALUES ('500', '202 Lake St', 'M4N5O6', 48, 'BR005');
 
 -- ParkingZoneType Table
-INSERT INTO ParkingZone VALUES (15, 1, 30, '123 Main St', 'A1B2C3');
-INSERT INTO ParkingZone VALUES (58, 4, 31, '123 Main St', 'A1B2C3');
-INSERT INTO ParkingZone VALUES (27, 1, 25, '456 Oak Rd', 'D4E5F6');
-INSERT INTO ParkingZone VALUES (51, 4, 41, '456 Oak Rd', 'D4E5F6');
-INSERT INTO ParkingZone VALUES (32, 2, 21, '456 Oak Rd', 'G7H8I9');
-INSERT INTO ParkingZone VALUES (43, 3, 17, '456 Oak Rd', 'G7H8I9');
-INSERT INTO ParkingZone VALUES (18, 1, 32, '101 River Ln', 'J1K2L3');
-INSERT INTO ParkingZone VALUES (29, 1, 23, '101 River Ln', 'J1K2L3');
-INSERT INTO ParkingZone VALUES (25, 2, 21, '202 Lake St', 'M4N5O6');
-INSERT INTO ParkingZone VALUES (45, 3, 27, '202 Lake St', 'M4N5O6');
+INSERT INTO ParkingZone VALUES (15, 1, 30, '100');
+INSERT INTO ParkingZone VALUES (58, 4, 31, '100');
+INSERT INTO ParkingZone VALUES (27, 1, 25, '200');
+INSERT INTO ParkingZone VALUES (51, 4, 41, '200');
+INSERT INTO ParkingZone VALUES (32, 2, 21, '300');
+INSERT INTO ParkingZone VALUES (43, 3, 17, '300');
+INSERT INTO ParkingZone VALUES (18, 1, 32, '400');
+INSERT INTO ParkingZone VALUES (29, 1, 23, '400');
+INSERT INTO ParkingZone VALUES (25, 2, 21, '500');
+INSERT INTO ParkingZone VALUES (45, 3, 27, '500');
 
 /*
 -- TODO: TypeSlots Table THIS DOESNT MAKE SENSE
