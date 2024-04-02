@@ -126,13 +126,15 @@ CREATE TABLE Staff (
 );
 
 -- Tower Table (Entity)
+/* Added new TowerID */
 CREATE TABLE Tower (
+    TowerID VARCHAR (8) NOT NULL,
     Address VARCHAR(255) NOT NULL,
     Zip CHAR(6) NOT NULL,
     TowerTotalSlots INT,
     -- RemainingSlots INT, , This should be a view instead
     BranchID VARCHAR(12),
-    PRIMARY KEY (Address, Zip),
+    PRIMARY KEY (TowerID),
     FOREIGN KEY (BranchID) REFERENCES BranchClient(BranchID)
 );
 
@@ -143,10 +145,9 @@ CREATE TABLE ParkingZone (
     ParkingZoneType INT NOT NULL,
     -- FilledSlots INT, This should be a view instead
     ZoneTotalSlots INT,
-    Address VARCHAR(255),
-    Zip CHAR(6),
+    TowerID VARCHAR(8),
     PRIMARY KEY (ParkingZoneID, ParkingZoneType),
-    FOREIGN KEY (Address, Zip) REFERENCES Tower(Address, Zip)
+    FOREIGN KEY (TowerID) REFERENCES Tower(TowerID)
 );
 
 -- TypeSlots Table (Not in ERD)
