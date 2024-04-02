@@ -4,24 +4,32 @@ import { Spinner } from 'react-bootstrap';
 import MakeReservationModal from './MakeReservationModal';
 
 const ParkingLots = () => {
-    const [lots, setLots] = useState([]);
+    const [branches, setBranches] = useState([]);
     const [loading, setLoading] = useState(true);
     const [modalShow, setModalShow] = useState(false);
 
     useEffect(() => {
-        setLots([
-            { name: 'Lot 1' },
-            { name: 'Lot 2' },
-            { name: 'Lot 3' },
-            { name: 'Lot 4' },
-            { name: 'Lot 5' },
-            { name: 'Lot 6' },
-        ]); //demo array
+        const getBranches = async () => {
+            try {
+                const response = await axios.post('http://localhost:3500/basic/getbranches');
+                console.log(response.data);
+                const branchIds = response.data.map(branch => branch.BranchID);
+                setBranches(branchIds);
+                console.log(branchIds);
+            } catch (error) {
+                console.error(error);
+                console.log("Error in getBranches");
+            }
+        }
+        getBranches();
         setLoading(false);
-    }, []); // Empty dependency array means this effect runs once on mount
+    }, []);
 
-    const handleClick = () => {
-        // logic to head to the reservation page
+    const [selectedBranch, setSelectedBranch] = useState(null);
+
+    const handleClick = (branchName) => {
+        setSelectedBranch(branchName);
+        setModalShow(true);
     }
 
     if (loading) {
@@ -36,12 +44,12 @@ const ParkingLots = () => {
     return (
         <div className="container m-4">
             <div className="row justify-content-center">
-                {lots.map((lot, index) => (
+                {branches.map((branch, index) => (
                     <div className="col-lg-3 col-md-6 mx-4 my-4" key={index}>
                         <div className="card text-center border-dark bg-light py-4" style={{width: "18rem", borderRadius: "20px"}}>
                             <div className="card-body">
-                                <h4 className="card-title p-3">{lot.name}</h4>
-                                <button onClick={() => {setModalShow(true);}} className="btn btn-primary mb-2 rounded-pill"> Reserve a spot </button>
+                                <h4 className="card-title p-3">{branch}</h4>
+                                <button onClick={() => handleClick(branch)} className="btn btn-primary mb-2 rounded-pill"> Reserve a spot </button>
                             </div>
                         </div>
                     </div>
@@ -49,10 +57,10 @@ const ParkingLots = () => {
             </div>
             <MakeReservationModal
                 show={modalShow}
-                onHide={() => setModalShow(false)}
+                onHide={() => {setModalShow(false); setSelectedBranch(null);}}
+                branchId={selectedBranch}
             />
         </div>
-        
     );
 }
 
