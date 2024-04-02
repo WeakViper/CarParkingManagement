@@ -4,8 +4,8 @@
 - The second section is comprised of the corresponding insert statements.
 */
 
-CREATE DATABASE CPMS;
-USE CPMS;
+CREATE DATABASE cpms_db;
+USE cpms_db;
 
 -- SECTION 1: SQL Data Definition Language (DDL)
 
@@ -65,11 +65,11 @@ CREATE TABLE Maintenance (
 
 -- Payment Table (Entity)
 CREATE TABLE Payment (
-    ID VARCHAR(10) NOT NULL,
+    PaymentID VARCHAR(10) NOT NULL,
     Method VARCHAR(255),
     PlateNumber VARCHAR(10),
     ExitGateID INT,
-    PRIMARY KEY (ID),
+    PRIMARY KEY (PaymentID),
     FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber),
     FOREIGN KEY (ExitGateID) REFERENCES ExitGate(ExitGateID)
 );
@@ -160,19 +160,19 @@ CREATE TABLE TypeSlots (
 /* SHOULD BE PARKING SLOT COMPRISES */
 -- TODO: ParkingSlot Table (Weak Entity Set)
 CREATE TABLE ParkingSlot (
-    ID VARCHAR(8),
+    ParkingSlotID VARCHAR(8),
     ParkingZoneID INT,
-    PRIMARY KEY (ID, ParkingZoneID),
+    PRIMARY KEY (ParkingSlotID, ParkingZoneID),
     FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID)
 );
 
 -- Occupy Table (Relationship)
 CREATE TABLE Occupy (
-    ID VARCHAR(8),
+    ParkingSlotID VARCHAR(8),
     ParkingZoneID INT,
     PlateNumber VARCHAR(10),
-    PRIMARY KEY (ID, ParkingZoneID, PlateNumber),
-    FOREIGN KEY (ID) REFERENCES ParkingSlot(ID),
+    PRIMARY KEY (ParkingSlotID, ParkingZoneID, PlateNumber),
+    FOREIGN KEY (ParkingSlotID) REFERENCES ParkingSlot(ParkingSlotID),
     FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID),
     FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber)
 );
