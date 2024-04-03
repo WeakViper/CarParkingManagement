@@ -33,7 +33,7 @@ router.post('/enter', async (req, res) => {
                 return;
             }
     
-            if (results.length > 0) {
+            if (results.length = 0) {
                 console.log(`Plate number ${plateNumber} exists in the Occupy table.`);
                 db.query(sql1, values1, (err, result, fields) => {
                     if (err) {
