@@ -1,4 +1,5 @@
 -- SECTION 2: INSERT STATEMENTS
+USE cpms_db;
 
 -- VehicleClass Table 
 -- A is for Private, B is for Heavy, C is for Maintenance
@@ -18,14 +19,10 @@ INSERT INTO VehicleClass VALUES ('PLATE0700', 'C');
 INSERT INTO VehicleClass VALUES ('PLATE0800', 'C');
 INSERT INTO VehicleClass VALUES ('PLATE0900', 'C');
 
-/*
--- TODO: WeightRate Table
-INSERT INTO WeightRate VALUES ('A', 10);
-INSERT INTO WeightRate VALUES ('B', 15);
+-- WeightRate Table
+INSERT INTO WeightRate VALUES ('A', 5);
+INSERT INTO WeightRate VALUES ('B', 10);
 INSERT INTO WeightRate VALUES ('C', 20);
-INSERT INTO WeightRate VALUES ('D', 25);
-INSERT INTO WeightRate VALUES ('E', 30); 
-*/
 
 -- PrivateCar Table
 INSERT INTO PrivateCar VALUES ('PLATE1234', 'p6725f');

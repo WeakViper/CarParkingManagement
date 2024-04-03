@@ -16,14 +16,12 @@ CREATE TABLE VehicleClass (
     PRIMARY KEY (PlateNumber)
 );
 
-/*
--- TODO: WeightRate Table (BCNF Product)
+-- WeightRate Table (BCNF Product)
 CREATE TABLE WeightRate (
     WeightClass CHAR(1),
     HourlyRate INT,
-    PRIMARY KEY (WeightClass),
-    FOREIGN KEY (WeightClass) REFERENCES VehicleClass(WeightClass)
-); */
+    PRIMARY KEY (WeightClass)
+);
 
 -- EntryGate Table (Entity)
 CREATE TABLE EntryGate (
