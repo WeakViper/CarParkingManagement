@@ -20,7 +20,7 @@ db.connect((err) => {
 });
 
 router.post('/enter', async (req, res) => {
-    const { plateNumber, weightClass, extra, entryGate } = req.body;
+    const { plateNumber, weightClass, extra, entryGate, TowerID } = req.body;
     const sql1 = 'INSERT INTO VehicleClass (plateNumber, weightClass) VALUES (?, ?)';
     const values1 = [plateNumber, weightClass];
 
@@ -86,28 +86,31 @@ router.post('/enter', async (req, res) => {
 
 
 
-    const ZoneQuery = `SELECT pz.ParkingZoneID
-FROM ParkingZone pz
-WHERE pz.ParkingZoneType = ? AND pz.ZoneTotalSlots >
-(
-SELECT COUNT(o.ParkingSlotID)
-FROM Occupy o
-WHERE o.ParkingZoneID = pz.ParkingZoneID
-)
-UNION
-SELECT pz.ParkingZoneID
-FROM ParkingZone pz
-WHERE pz.ParkingZoneType = 4 AND pz.ZoneTotalSlots >
-(
-SELECT COUNT(o.ParkingSlotID)
-FROM Occupy o
-WHERE o.ParkingZoneID = pz.ParkingZoneID
-)
-LIMIT 1;`;
+    const ZoneQuery = `SELECT p.ParkingZoneID
+    FROM ParkingZone p
+    WHERE p.TowerID = '100'
+    INTERSECT (
+        SELECT pz.ParkingZoneID
+        FROM ParkingZone pz
+        WHERE pz.ParkingZoneType = 1 AND pz.ZoneTotalSlots > (
+            SELECT COUNT(o.ParkingSlotID)
+            FROM Occupy o
+            WHERE o.ParkingZoneID = pz.ParkingZoneID
+        )
+        UNION
+        SELECT pz.ParkingZoneID
+        FROM ParkingZone pz
+        WHERE pz.ParkingZoneType = 4 AND pz.ZoneTotalSlots > (
+            SELECT COUNT(o.ParkingSlotID)
+            FROM Occupy o
+            WHERE o.ParkingZoneID = pz.ParkingZoneID
+        )
+    )
+    LIMIT 1;`;
 
     const getZoneId = async (zoneID) => {
         return new Promise((resolve, reject) => {
-            db.query(ZoneQuery, [zone], (err, result, fields) => {
+            db.query(ZoneQuery, [zone, TowerID], (err, result, fields) => {
                 if (err) {
                     reject(err.message);
                 } else {
