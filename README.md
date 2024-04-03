@@ -36,3 +36,9 @@ Our database can explained with the following Entity Relationship Diagram. Pleas
 - 2nd April: Finish linking the frontend and backend, iron out any last minute bugs or discrepancies.
 - 3rd April to 5th April: Ask for feedback in office hours and from TA to improve project and make final changes.
 - 5th April: Submit project by 6pm or sooner.
+
+
+## Change Log
+
+- Added TowerID as primary key for Towers and removed Address and Zip as Primary Keys.
+
