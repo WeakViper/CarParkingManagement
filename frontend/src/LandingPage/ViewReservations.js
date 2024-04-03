@@ -1,5 +1,5 @@
 import { useLocation } from 'react-router-dom';
-import HomeNavbar from "./HomeNavBar";
+import HomeNavbar from "../Home/HomeNavBar";
 
 const ViewReservations = () => {
     const location = useLocation();

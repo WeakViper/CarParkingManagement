@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
-import MakeReservationModal from './MakeReservationModal';
 
 const ParkingLots = () => {
     const [branches, setBranches] = useState([]);
@@ -55,11 +54,6 @@ const ParkingLots = () => {
                     </div>
                 ))}
             </div>
-            <MakeReservationModal
-                show={modalShow}
-                onHide={() => {setModalShow(false); setSelectedBranch(null);}}
-                branchId={selectedBranch}
-            />
         </div>
     );
 }

@@ -3,6 +3,7 @@ import Navbar from "./Navbar";
 import GetStartedUser from './GetStartedUser';
 import GetStartedManager from "./GetStartedManager"
 import BackgroundImage from "../assets/BackgroundMain.jpeg"
+import ViewPurchasesButton from './ViewPurchasesButton';
 
 const LandingPage = () => {
     return (
@@ -19,7 +20,8 @@ const LandingPage = () => {
                 <Navbar sticky="top" exact />
                 <div className="line-separator my-5"></div>
 
-                <div style={{ marginTop: '550px' }}>
+                <div style={{ marginTop: '350px' }}>
+                    <ViewPurchasesButton />
                     <GetStartedUser />
                     <GetStartedManager />
                 </div>

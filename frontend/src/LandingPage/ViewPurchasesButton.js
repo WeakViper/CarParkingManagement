@@ -17,10 +17,10 @@ const ViewPurchasesButton = () => {
 
     return (
         <div className="OrderButtonLanding">
-            <div className="d-flex justify-content-start m-5 px-5">
-            <button type="submit" className="btn orderNowButton rounded-pill p-5 btn-primary d-flex align-items-center justify-content-center" onClick={handleShow}>
+            <div className="d-grid gap-2 col-4 mx-auto">
+            <button type="submit" className="btn rounded-pill px-5 py-4 btn-primary d-flex align-items-center justify-content-center" onClick={handleShow}>
                     <ArrowRight color="white" size={48} />
-                    <span>View Reservations</span>
+                    <span>Find Car By Plate#</span>
             </button>
             </div>
             <div className="line-separator my-5"></div>
