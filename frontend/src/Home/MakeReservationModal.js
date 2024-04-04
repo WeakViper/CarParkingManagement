@@ -45,6 +45,8 @@ function MakeReservationModal(props) {
       weightClass: weightClass,
       extra: extra
     }).then(response => {
+      console.log(response.data);
+      console.log('Before alert');
       alert(`${response.data.parkingSlotID} has been assigned in Zone: ${response.data.zoneID}. Please Direct Accordingly.`);
       props.onHide();
     }).catch(error => {

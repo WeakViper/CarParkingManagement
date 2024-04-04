@@ -1,18 +1,25 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'react-bootstrap-icons';
 import { Button, Modal } from 'react-bootstrap';
+import axios from 'axios';
 
 const ViewPurchasesButton = () => {
     const [show, setShow] = useState(false);
     const [plateNumber, setPlateNumber] = useState("");
-    const navigate = useNavigate();
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
     const handleSubmit = () => {
-        navigate('/viewreservations', { state: { plateNumber } });
+        axios.post('http://localhost:3500/basic/getslot', { plateNumber: plateNumber }).then((response) => {
+            if (response.data.message === "None") {
+                alert("No slot found for this plate number");
+                handleClose();
+            } else {
+                alert(`Slot ID: ${response.data.slotID}, Zone ID: ${response.data.zoneID}`);
+                handleClose();
+            }
+        });
     };
 
     return (

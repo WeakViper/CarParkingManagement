@@ -30,7 +30,7 @@ router.post('/enter', async (req, res) => {
     
         db.query(query, [plateNumber], (err, results) => {
             if (err) {
-                console.error('Error executing query:', err);
+                res.status(500).send(err.message);
                 return;
             }
             console.log(results.length);
@@ -38,7 +38,8 @@ router.post('/enter', async (req, res) => {
                 console.log(`Plate number ${plateNumber} does not exist in the Occupy table.`);
                 db.query(sql1, values1, (err, result, fields) => {
                     if (err) {
-                        return console.log(err.message);
+                        res.status(500).send(err.message);
+                        return;
                     }
                     return console.log(result);
                 })
@@ -62,7 +63,7 @@ router.post('/enter', async (req, res) => {
                 // this is to insert the vehicle into the correct table
                 db.query(sql2, values2, (err, result, fields) => {
                     if (err) {
-                        console.log(err.message);
+                        res.status(500).send(err.message);
                         return;
                     }
                     return console.log(result);
@@ -85,7 +86,7 @@ router.post('/enter', async (req, res) => {
                 // this is to insert the vehicle into the correct table
                 db.query(sql2, values2, (err, result, fields) => {
                     if (err) {
-                        console.log(err.message);
+                        res.status(500).send(err.message);
                         return;
                     }
                     return console.log(result);
@@ -113,11 +114,11 @@ router.post('/enter', async (req, res) => {
 
     const ZoneQuery = `SELECT p.ParkingZoneID
     FROM ParkingZone p
-    WHERE p.TowerID = '100'
+    WHERE p.TowerID = ?
     INTERSECT (
         SELECT pz.ParkingZoneID
         FROM ParkingZone pz
-        WHERE pz.ParkingZoneType = 1 AND pz.ZoneTotalSlots > (
+        WHERE pz.ParkingZoneType = ? AND pz.ZoneTotalSlots > (
             SELECT COUNT(o.ParkingSlotID)
             FROM Occupy o
             WHERE o.ParkingZoneID = pz.ParkingZoneID
@@ -135,10 +136,12 @@ router.post('/enter', async (req, res) => {
 
     const getZoneId = async (zoneID) => {
         return new Promise((resolve, reject) => {
-            db.query(ZoneQuery, [zone, TowerID], (err, result, fields) => {
+            db.query(ZoneQuery, [TowerID, zone], (err, result, fields) => {
                 if (err) {
-                    reject(err.message);
+                    res.status(500).send(err.message);
+                    return;
                 } else {
+                    console.log(result);
                     resolve(result[0].ParkingZoneID);
                 }
             })
@@ -188,7 +191,7 @@ router.post('/enter', async (req, res) => {
         return console.log(result);
     })
 
-    let sql3 = 'INSERT INTO Enters VALUES (NOW(), ?, ?)';
+    let sql3 = 'INSERT INTO Enters VALUES (NOW(), ?, ?);';
     let values3 = [entryGate, plateNumber];   
 
     // this is to insert the vehicle into entry table
@@ -207,6 +210,7 @@ router.post('/enter', async (req, res) => {
         parkingSlotID: parkingSlotID,
         zoneID: zoneID
     });
+    console.log("r3");
 })
 
 
@@ -221,6 +225,7 @@ router.post('/exit', async (req, res) => {
                     reject(err.message);
                 } else {
                     console.log(result);
+                    console.log(result[0]);
                     resolve(result[0].ParkingSlotID);
                 }
             })
@@ -234,7 +239,8 @@ router.post('/exit', async (req, res) => {
         return new Promise((resolve, reject) => {
             db.query("SELECT ParkingZoneID FROM Occupy WHERE PlateNumber = ? LIMIT 1", [plateNumber], (err, result, fields) => {
                 if (err) {
-                    reject(err.message);
+                    res.status(500).send(err.message);
+                    return;
                 } else {
                     resolve(result[0].ParkingZoneID);
                 }
@@ -249,7 +255,8 @@ router.post('/exit', async (req, res) => {
         return new Promise((resolve, reject) => {
             db.query("INSERT INTO Exits VALUES (NOW(),?, ?, ?, ?)", [exitGate, plateNumber, zoneID, slotID], (err, result, fields) => {
                 if (err) {
-                    reject(err.message);
+                    res.status(500).send(err.message);
+                    return;
                 } else {
                     resolve();
                 }
@@ -266,7 +273,8 @@ router.post('/exit', async (req, res) => {
     // this is to delete the vehicle from the Occupy table
     db.query(sql2, values2, (err, result, fields) => {
         if (err) {
-            return console.log(err.message);
+            res.status(500).send(err.message);
+            return;
         }
         return console.log(result);
     })
@@ -275,7 +283,8 @@ router.post('/exit', async (req, res) => {
         return new Promise((resolve, reject) => {
             db.query("SELECT WeightClass FROM VehicleClass WHERE PlateNumber = ?", [plateNumber], (err, result, fields) => {
                 if (err) {
-                    reject(err.message);
+                    res.status(500).send(err.message);
+                    return;
                 } else {
                     resolve(result[0].WeightClass);
                 }
@@ -290,7 +299,8 @@ router.post('/exit', async (req, res) => {
         return new Promise((resolve, reject) => {
             db.query("SELECT HourlyRate FROM WeightRate WHERE WeightClass = ?", [weightClass], (err, result, fields) => {
                 if (err) {
-                    reject(err.message);
+                    res.status(500).send(err.message);
+                    return;
                 } else {
                     resolve(result[0].HourlyRate);
                 }
@@ -313,7 +323,8 @@ router.post('/exit', async (req, res) => {
         return new Promise((resolve, reject) => {
             db.query(entryTimeQuery, [plateNumber, plateNumber], (err, result, fields) => {
                 if (err) {
-                    reject(err.message);
+                    res.status(500).send(err.message);
+                    return;
                 } else {
                     resolve(result[0].DifferenceInHours);
                 }
@@ -325,17 +336,15 @@ router.post('/exit', async (req, res) => {
 
     let amount = timeDifference * weightRate;
 
-    const randomId = Math.floor(Math.random() * 1000); // Generates a random number between 0 and 999
-    const paymentId = `PID${randomId}`;
-
     // Add the generated payment ID to the beginning of the values array
-    const values3 = [paymentId, method, plateNumber, exitGate, amount];
+    const values3 = [method, amount, plateNumber, exitGate];
 
-    const sql3 = 'INSERT INTO Payment VALUES (?, ?, ?, ?, ?)';
+    const sql3 = 'INSERT INTO Payment VALUES (UUID(), ?, ?, ?, ?)';
 
     db.query(sql3, values3, (err, result, fields) => {
         if (err) {
-            console.log(err.message);
+            res.status(500).send(err.message);
+            return;
         } else {
             console.log(result);
         }
