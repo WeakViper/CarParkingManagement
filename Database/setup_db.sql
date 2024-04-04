@@ -7,6 +7,25 @@
 CREATE DATABASE cpms_db;
 USE cpms_db;
 
+DROP TABLE IF EXISTS Occupy;
+DROP TABLE IF EXISTS Exits;
+DROP TABLE IF EXISTS ParkingSlot;
+DROP TABLE IF EXISTS TypeSlots;
+DROP TABLE IF EXISTS ParkingZone;
+DROP TABLE IF EXISTS Tower;
+DROP TABLE IF EXISTS Staff;
+/* DROP TABLE IF EXISTS BranchCap; */
+DROP TABLE IF EXISTS BranchClient;
+DROP TABLE IF EXISTS Enters;
+DROP TABLE IF EXISTS Payment;
+DROP TABLE IF EXISTS Maintenance;
+DROP TABLE IF EXISTS HeavyDuty;
+DROP TABLE IF EXISTS PrivateCar;
+DROP TABLE IF EXISTS ExitGate;
+DROP TABLE IF EXISTS EntryGate;
+DROP TABLE IF EXISTS WeightRate;
+DROP TABLE IF EXISTS VehicleClass;
+
 -- SECTION 1: SQL Data Definition Language (DDL)
 
 -- VehicleClass Table (ISA Super Entity)
@@ -62,34 +81,29 @@ CREATE TABLE Maintenance (
 );
 
 -- Payment Table (Entity)
+-- Added Payment amount
+-- Newly added assertion, makes sure that the payment amounts are zero or positive
 CREATE TABLE Payment (
-    PaymentID VARCHAR(10) NOT NULL,
+    PaymentID VARCHAR(255) NOT NULL,
     Method VARCHAR(255),
+    Amount FLOAT,
     PlateNumber VARCHAR(10),
     ExitGateID INT,
     PRIMARY KEY (PaymentID),
     FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber),
-    FOREIGN KEY (ExitGateID) REFERENCES ExitGate(ExitGateID)
+    FOREIGN KEY (ExitGateID) REFERENCES ExitGate(ExitGateID),
+    CONSTRAINT PositiveAmount CHECK (Amount >= 0)
 );
 
 -- Enters Table (Relationship)
+-- Removed GateID as primary key, replaced it with time instead
 CREATE TABLE Enters (
     DateTime DATETIME,
     EntryGateID INT,
     PlateNumber VARCHAR(10),
-    PRIMARY KEY (EntryGateID, PlateNumber),
+    PRIMARY KEY (DateTime, PlateNumber),
     FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber),
-    FOREIGN KEY (EntryGateID) REFERENCES EntryGate(EntryGateID)
-);
-
--- Exits Table (Relationship)
-CREATE TABLE Exits (
-    DateTime DATETIME,
-    ExitGateID INT,
-    PlateNumber VARCHAR(10),
-    PRIMARY KEY (ExitGateID, PlateNumber),
-    FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber),
-    FOREIGN KEY (ExitGateID) REFERENCES ExitGate(ExitGateID)
+    FOREIGN KEY (EntryGateID) REFERENCES EntryGate(EntryGateID) ON DELETE CASCADE
 );
 
 -- BranchClient Table
@@ -120,7 +134,7 @@ CREATE TABLE Staff (
     StartDate DATE,
     BranchID VARCHAR(12),
     PRIMARY KEY (EmployeeID),
-    FOREIGN KEY (BranchID) REFERENCES BranchClient(BranchID)
+    FOREIGN KEY (BranchID) REFERENCES BranchClient(BranchID) ON DELETE CASCADE
 );
 
 -- Tower Table (Entity)
@@ -133,7 +147,7 @@ CREATE TABLE Tower (
     -- RemainingSlots INT, , This should be a view instead
     BranchID VARCHAR(12),
     PRIMARY KEY (TowerID),
-    FOREIGN KEY (BranchID) REFERENCES BranchClient(BranchID)
+    FOREIGN KEY (BranchID) REFERENCES BranchClient(BranchID) ON DELETE CASCADE
 );
 
 -- ParkingZone, i.e. Zone Table (Entity)
@@ -145,7 +159,7 @@ CREATE TABLE ParkingZone (
     ZoneTotalSlots INT,
     TowerID VARCHAR(8),
     PRIMARY KEY (ParkingZoneID, ParkingZoneType),
-    FOREIGN KEY (TowerID) REFERENCES Tower(TowerID)
+    FOREIGN KEY (TowerID) REFERENCES Tower(TowerID) ON DELETE CASCADE
 );
 
 -- TypeSlots Table (Not in ERD)
@@ -153,7 +167,7 @@ CREATE TABLE TypeSlots (
     ParkingZoneID INT,
     TotalSlots INT,
     PRIMARY KEY (ParkingZoneID),
-    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID)
+    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID) ON DELETE CASCADE
 );
 
 /* SHOULD BE PARKING SLOT COMPRISES */
@@ -162,7 +176,23 @@ CREATE TABLE ParkingSlot (
     ParkingSlotID VARCHAR(8),
     ParkingZoneID INT,
     PRIMARY KEY (ParkingSlotID, ParkingZoneID),
-    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID)
+    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID) ON DELETE CASCADE
+);
+
+-- Exits Table (Relationship)
+-- Removed GateID as primary key, replaced it with time instead
+-- Added ParkingZoneID and ParkingSlotID to preserve parking history
+CREATE TABLE Exits (
+    DateTime DATETIME,
+    ExitGateID INT,
+    PlateNumber VARCHAR(10),
+    ParkingZoneID INT,
+    ParkingSlotID VARCHAR(8),
+    PRIMARY KEY (DateTime, PlateNumber),
+    FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber),
+    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID) ON DELETE CASCADE,
+    FOREIGN KEY (ParkingSlotID) REFERENCES ParkingSlot(ParkingSlotID) ON DELETE CASCADE,
+    FOREIGN KEY (ExitGateID) REFERENCES ExitGate(ExitGateID) ON DELETE CASCADE
 );
 
 -- Occupy Table (Relationship)
@@ -171,7 +201,7 @@ CREATE TABLE Occupy (
     ParkingZoneID INT,
     PlateNumber VARCHAR(10),
     PRIMARY KEY (ParkingSlotID, ParkingZoneID, PlateNumber),
-    FOREIGN KEY (ParkingSlotID) REFERENCES ParkingSlot(ParkingSlotID),
-    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID),
+    FOREIGN KEY (ParkingSlotID) REFERENCES ParkingSlot(ParkingSlotID) ON DELETE CASCADE,
+    FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID) ON DELETE CASCADE,
     FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber)
 );
