@@ -23,7 +23,7 @@ const Navbar = () => {
       
               <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
                 <button className='btn btn-orange rounded-pill ms-auto px-5 mx-3 btn-primary' onClick={handleClickLogin}>For Managers</button>
-                <button className='btn btn-orange rounded-pill px-5 mr-5 btn-primary' onClick={handleSignUp}>To Reserve</button>
+                <button className='btn btn-orange rounded-pill px-5 mr-5 btn-primary' onClick={handleSignUp}>For Gate Staff</button>
               </div> 
           </div>
         </nav>

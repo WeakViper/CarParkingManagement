@@ -29,6 +29,27 @@ function MakeReservationModal(props) {
   const handleSubmit = (event) => {
     event.preventDefault();
     console.log(props.branchId);
+    const tower = document.getElementById('tower').value;
+    const plate = document.getElementById('plate').value;
+    const entryGate = document.getElementById('entrygate').value;
+    const weightClass = document.getElementById('weightClass').value;
+    const extra = document.getElementById('extra').value;
+    if (tower === "" || plate === "" || entryGate === "" || weightClass === "") {
+      alert("Please fill in all fields");
+      return;
+    }
+    axios.post('http://localhost:3500/enterexit/enter', {
+      TowerID: tower,
+      plateNumber: plate,
+      entryGate: entryGate,
+      weightClass: weightClass,
+      extra: extra
+    }).then(response => {
+      alert(`${response.data.parkingSlotID} has been assigned in Zone: ${response.data.zoneID}. Please Direct Accordingly.`);
+      props.onHide();
+    }).catch(error => {
+      alert("An error occurred. Reservation failed");
+  })
   };
 
   return (
@@ -68,6 +89,10 @@ function MakeReservationModal(props) {
                 <option key={option}>{option}</option>
               )}
             </Form.Control>
+          </Form.Group>
+          <Form.Group controlId="extra">
+            <Form.Label>Additonal Information</Form.Label>
+            <Form.Control type="text" />
           </Form.Group>
           <Button variant="primary" type="submit" className='px-5 py-1 my-3 rounded-pill'>
             Submit

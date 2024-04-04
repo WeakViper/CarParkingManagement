@@ -1,5 +1,6 @@
 import HomeNavBar from "./HomeNavBar";
 import ParkingLots from "./ParkingLots";
+import CheckOutButton from "./CheckOut";
 
 const SelectParkingLot = () => {
     return (
@@ -13,6 +14,7 @@ const SelectParkingLot = () => {
             <div className="line-separator mb-5" style={{borderTop: "2px solid black", width: "90%", marginLeft: "5%", marginRight: "5%"}}></div>
             <ParkingLots />
             <div className="line-separator mb-5" style={{borderTop: "2px solid black", width: "90%", marginLeft: "5%", marginRight: "5%"}}></div>
+            <CheckOutButton />
         </div>
     );
 }

@@ -15,7 +15,7 @@ const GetStartedButton = () => {
             <div className="d-grid gap-2 col-4 mx-auto">
                 <button type="submit" className="btn rounded-pill px-2 py-3 btn-primary" onClick={handleClick}>
                     <ArrowRight color="white" size={48} />
-                    <span>Continue As Manager</span> {/* Make sure this text is inside the button */}
+                    <span className="mx-2">Continue As Manager</span>
                 </button>
             </div>
             <div className="line-separator my-5"></div>

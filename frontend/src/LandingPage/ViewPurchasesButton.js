@@ -20,7 +20,7 @@ const ViewPurchasesButton = () => {
             <div className="d-grid gap-2 col-4 mx-auto">
             <button type="submit" className="btn rounded-pill px-5 py-4 btn-primary d-flex align-items-center justify-content-center" onClick={handleShow}>
                     <ArrowRight color="white" size={48} />
-                    <span>Find Car By Plate#</span>
+                    <span className="mx-2">Find Car By Plate#</span>
             </button>
             </div>
             <div className="line-separator my-5"></div>

@@ -23,21 +23,22 @@ router.post('/enter', async (req, res) => {
     const { plateNumber, weightClass, extra, entryGate, TowerID } = req.body;
     const sql1 = 'INSERT INTO VehicleClass (plateNumber, weightClass) VALUES (?, ?)';
     const values1 = [plateNumber, weightClass];
+    console.log(plateNumber, weightClass, extra, entryGate, TowerID);
 
-    function checkPlateNumber (plateNumber) {
-        const query = 'SELECT * FROM Occupy WHERE PlateNumber = ?';
+    async function checkPlateNumber (plateNumber) {
+        const query = 'SELECT * FROM VehicleClass WHERE PlateNumber = ?';
     
         db.query(query, [plateNumber], (err, results) => {
             if (err) {
                 console.error('Error executing query:', err);
                 return;
             }
-    
-            if (results.length = 0) {
-                console.log(`Plate number ${plateNumber} exists in the Occupy table.`);
+            console.log(results.length);
+            if (results.length == 0) {
+                console.log(`Plate number ${plateNumber} does not exist in the Occupy table.`);
                 db.query(sql1, values1, (err, result, fields) => {
                     if (err) {
-                        return res.send(err.message);
+                        return console.log(err.message);
                     }
                     return console.log(result);
                 })
@@ -67,15 +68,15 @@ router.post('/enter', async (req, res) => {
                     return console.log(result);
                 })
             } else {
-                console.log(`Plate number ${plateNumber} does not exist in the Occupy table.`);
+                console.log(`Plate number ${plateNumber} exists in the Occupy table.`);
                 let sql2;
                 const values2 = [extra, plateNumber];
                 if (weightClass === "A") {
-                    sql2 = 'UPDATE PrivateCar SET Extra = ? WHERE PlateNumber = ?';
+                    sql2 = 'UPDATE PrivateCar SET Membership = ? WHERE PlateNumber = ?';
                 } else if (weightClass === "B") {
-                    sql2 = 'UPDATE HeavyDuty SET Extra = ? WHERE PlateNumber = ?';
+                    sql2 = 'UPDATE HeavyDuty SET CompanyName = ? WHERE PlateNumber = ?';
                 } else if (weightClass === "C") {
-                    sql2 = 'UPDATE Maintenance SET Extra = ? WHERE PlateNumber = ?';
+                    sql2 = 'UPDATE Maintenance SET WorkOrderID = ? WHERE PlateNumber = ?';
                 } else {
                     sql2 = 'UPDATE PrivateCar SET Extra = ? WHERE PlateNumber = ?';
                     console.log("Invalid weight class");
@@ -94,22 +95,7 @@ router.post('/enter', async (req, res) => {
     }
     
     // Example usage
-    checkPlateNumber(plateNumber);
-    
-    let sql3 = 'INSERT INTO Enters VALUES (NOW(), ?, ?)';
-    let values3 = [entryGate, plateNumber];   
-
-    // this is to insert the vehicle into entry table
-    db.query(sql3, values3, (err, result, fields) => {
-        if (err) {
-            console.log(err.message);
-            console.log("r2");
-            return;
-
-        }
-        return console.log(result);
-
-    })
+    await checkPlateNumber(plateNumber);
 
     let zone;
     if (weightClass === "A") {
@@ -194,15 +180,33 @@ router.post('/enter', async (req, res) => {
     const sql4 = 'INSERT INTO Occupy VALUES (?, ?, ?)';
     const values4 = [parkingSlotID, zoneID, plateNumber];   
 
-    // this is to insert the vehicle into entry table
+    // this is to insert the vehicle into occupy table
     db.query(sql4, values4, (err, result, fields) => {
         if (err) {
-            return res.send(err.message);
+            return console.log(err.message);
         }
         return console.log(result);
     })
 
-    res.send("Vehicle entered successfully!");
+    let sql3 = 'INSERT INTO Enters VALUES (NOW(), ?, ?)';
+    let values3 = [entryGate, plateNumber];   
+
+    // this is to insert the vehicle into entry table
+    db.query(sql3, values3, (err, result, fields) => {
+        if (err) {
+            console.log(err.message);
+            console.log("r2");
+            return;
+
+        }
+        return console.log(result);
+
+    })
+
+    res.json({
+        parkingSlotID: parkingSlotID,
+        zoneID: zoneID
+    });
 })
 
 
@@ -262,7 +266,7 @@ router.post('/exit', async (req, res) => {
     // this is to delete the vehicle from the Occupy table
     db.query(sql2, values2, (err, result, fields) => {
         if (err) {
-            return res.send(err.message);
+            return console.log(err.message);
         }
         return console.log(result);
     })
@@ -337,7 +341,9 @@ router.post('/exit', async (req, res) => {
         }
     })
 
-    res.send("Exit successful!");
+    res.json({
+        amount: amount
+    });
 
 
 })

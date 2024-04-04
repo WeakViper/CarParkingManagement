@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import axios from 'axios';
 import { Spinner } from 'react-bootstrap';
+import MakeReservationModal from './MakeReservationModal';
 
 const ParkingLots = () => {
     const [branches, setBranches] = useState([]);
@@ -48,12 +49,17 @@ const ParkingLots = () => {
                         <div className="card text-center border-dark bg-light py-4" style={{width: "18rem", borderRadius: "20px"}}>
                             <div className="card-body">
                                 <h4 className="card-title p-3">{branch}</h4>
-                                <button onClick={() => handleClick(branch)} className="btn btn-primary mb-2 rounded-pill"> Reserve a spot </button>
+                                <button onClick={() => handleClick(branch)} className="btn btn-primary mb-2 rounded-pill"> Check In Vehicle </button>
                             </div>
                         </div>
                     </div>
                 ))}
             </div>
+            <MakeReservationModal
+                show={modalShow}
+                onHide={() => {setModalShow(false); setSelectedBranch(null);}}
+                branchId={selectedBranch}
+            />
         </div>
     );
 }
