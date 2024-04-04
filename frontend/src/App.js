@@ -11,6 +11,8 @@ import ManageBranches from './Manager/ManageBranches';
 import CountByPlate from './Manager/CountByPlate';
 import BusiestGate from './Manager/BusiestGate';
 import MethodAmount from './Manager/MethodAmount';
+import ClientSlots from './Manager/ClientSlotsTotal';
+import GateAllPayments from './Manager/GateAllPayments';
 
 function App() {
   return (
@@ -53,6 +55,14 @@ function App() {
 
       <Routes>
         <Route path="/methodamount" element={<MethodAmount />} />
+      </Routes>
+
+      <Routes>
+        <Route path="/branchslots" element={<ClientSlots />} />
+      </Routes>
+
+      <Routes>
+        <Route path="/supportedgates" element={<GateAllPayments />} />
       </Routes>
     </Router>
   );

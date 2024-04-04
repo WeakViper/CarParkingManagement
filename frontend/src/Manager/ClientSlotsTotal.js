@@ -2,25 +2,22 @@ import { Card, ListGroup, Spinner } from "react-bootstrap";
 import HomeNavbar from "../Home/HomeNavBar";
 import { useState, useEffect } from "react";
 import axios from 'axios';
-import { useLocation } from 'react-router-dom';
 
-const MethodAmount = () => {
+const ClientSlots = () => {
     const [loading, setLoading] = useState(true);
     const [methods, setMethods] = useState([]);
-    const location = useLocation();
-    const amount = location.state.amount;
 
     useEffect(() => {
         const getEntries = async () => {
             try {
-                const response = await axios.post('http://localhost:3500/basic/methodamt', {amount: amount});
+                const response = await axios.post('http://localhost:3500/basic/branchslots');
                 console.log(response.data);
                 const methods = response.data;
                 setMethods(methods);
                 console.log(methods);
             } catch (error) {
                 console.error(error);
-                alert(`Error in getting gates ${error}`);
+                alert(`Error in getting Clients ${error}`);
             }
         }
         getEntries();
@@ -39,7 +36,7 @@ const MethodAmount = () => {
     return (
         <div className="ManageEmp">
             <HomeNavbar sticky = "top" exact/>
-            <h2 className="m-5" style={{color: "black", fontWeight: "bold"}}> Total Amount By Payment Method </h2>
+            <h2 className="m-5" style={{color: "black", fontWeight: "bold"}}> Total Slots By Client </h2>
             <div className="line-separator mb-5" style={{borderTop: "2px solid black", width: "90%", marginLeft: "5%", marginRight: "5%"}}></div>
             <div className="d-flex flex-column align-items-center">
                 {methods.map(method => (
@@ -50,9 +47,9 @@ const MethodAmount = () => {
                     onMouseUp={(e) => e.currentTarget.style.transform = 'scale(1)'}
                     >
                         <Card.Body>
-                            <Card.Title>{`${method.Method}`}</Card.Title>
+                            <Card.Title>{`${method.ClientName}`}</Card.Title>
                             <ListGroup variant="flush">
-                                <ListGroup.Item>Total Amount By Method: {method.total}</ListGroup.Item>
+                                <ListGroup.Item>Total Amount By Gate: {method.totalSlots}</ListGroup.Item>
                             </ListGroup>
                         </Card.Body>
                     </Card>
@@ -62,4 +59,4 @@ const MethodAmount = () => {
     );
 }
  
-export default MethodAmount;
+export default ClientSlots;

@@ -209,15 +209,15 @@ router.post('/methodamt', (req, res) => {
     }
 });
 
-//Join Query
-router.post('/gatewithamt', (req, res) => {
-    let query = `SELECT e.ExitGateID , SUM(p.Amount) AS amount
-    FROM Exits e , Payment p 
-    WHERE e.PlateNumber = p.PlateNumber
-    GROUP BY e.ExitGateID 
-    HAVING SUM(p.Amount) > ?;`
+//Join Query to find the total slots for each client.
+router.post('/branchslots', (req, res) => {
+    let query = `SELECT bc.ClientName , SUM(t.TowerTotalSlots) AS totalSlots
+    FROM BranchClient bc, Tower t
+    WHERE bc.BranchID = t.BranchID
+    GROUP BY bc.ClientName
+    ORDER BY totalSlots DESC;`
     try{
-    db.query(query, [req.body.amount], (err, response) => {
+    db.query(query, (err, response) => {
         if (err) {
             res.status(500).send(err.message);
             return;
