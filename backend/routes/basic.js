@@ -42,6 +42,28 @@ router.post('/getbranches', (req, res) => {
 });
 
 
+router.post('/getslot', (req, res) => {
+    let query = 'SELECT ParkingSlotID, ParkingZoneID FROM Occupy WHERE plateNumber = ?'
+    db.query(query, [req.body.plateNumber], (err, res) => {
+        if (err) {
+            console.log(err.message);
+            return;
+        }
+        if (res.body.length == 0) {
+            res.json({
+                message: "None"
+            });
+        } else {
+            res.json({
+                message: "Success",
+                slotID: res[0].ParkingSlotID,
+                zoneID: res[0].ParkingZoneID
+            });
+        }
+    });
+});
+
+
 
 
 module.exports = router;
