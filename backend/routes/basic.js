@@ -66,6 +66,7 @@ router.post('/getslot', (req, res) => {
 });
 
 
+//Delete Query
 router.post('/deletebranch', (req, res) => {
     let query = 'DELETE FROM BranchClient WHERE BranchID = ?'
     db.query(query, [req.body.branchID], (err, res) => {
@@ -87,7 +88,7 @@ router.post('/deletebranch', (req, res) => {
     });
 });
 
-
+//Update query
 router.post('/updatestaff', (req, res) => {
     let query = 'SELECT * FROM Staff WHERE EmployeeID = ?'
     db.query(query, [req.body.employeeID], (err, res) => {
@@ -108,6 +109,7 @@ router.post('/updatestaff', (req, res) => {
     });
 });
 
+//Aggregation query
 router.post('/countentries', (req, res) => {
     let query = `SELECT PlateNumber, COUNT(*) AS entries FROM Enters
     GROUP BY PlateNumber;`
@@ -121,6 +123,7 @@ router.post('/countentries', (req, res) => {
 });
 
 
+// Nested Aggregation query
 router.post('/busiestgate', (req, res) => {
     let query = `SELECT ExitGateID 
     FROM Exits
@@ -139,6 +142,7 @@ router.post('/busiestgate', (req, res) => {
     });
 });
 
+//Having Aggregation query
 router.post('/methodamt', (req, res) => {
     let query = `SELECT Method, SUM(Amount)
     FROM Payment p
@@ -153,13 +157,35 @@ router.post('/methodamt', (req, res) => {
     });
 });
 
+//Join Query
 router.post('/gatewithamt', (req, res) => {
-    let query = `SELECT e.ExitGateID , SUM(p.Amount)
+    let query = `SELECT e.ExitGateID , SUM(p.Amount) AS amount
     FROM Exits e , Payment p 
     WHERE e.PlateNumber = p.PlateNumber
     GROUP BY e.ExitGateID 
     HAVING SUM(p.Amount) > ?;`
     db.query(query, [req.body.amount], (err, response) => {
+        if (err) {
+            res.status(500).send(err.message);
+            return;
+        }
+        res.send(response);
+    });
+});
+
+//Divison Query
+router.post('/gatewithmethod', (req, res) => {
+    let query = `SELECT DISTINCT p1.ExitGateID
+    FROM Payment p1
+    WHERE NOT EXISTS (
+        SELECT DISTINCT p2.Method
+        FROM Payment p2
+        EXCEPT
+        SELECT DISTINCT p3.Method
+        from Payment p3
+        WHERE p3.ExitGateID = p1.ExitGateID
+    );`
+    db.query(query, (err, response) => {
         if (err) {
             res.status(500).send(err.message);
             return;
