@@ -230,7 +230,7 @@ router.post('/branchslots', (req, res) => {
     }
 });
 
-//Divison Query
+//Divison Query to get gate which supports all payment methods.
 router.post('/gatewithmethod', (req, res) => {
     let query = `SELECT DISTINCT p1.ExitGateID
     FROM Payment p1

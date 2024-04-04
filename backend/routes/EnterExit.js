@@ -27,7 +27,8 @@ router.post('/enter', async (req, res) => {
 
     async function checkPlateNumber (plateNumber) {
         const query = 'SELECT * FROM VehicleClass WHERE PlateNumber = ?';
-    
+        
+        try {
         db.query(query, [plateNumber], (err, results) => {
             if (err) {
                 res.status(500).send(err.message);
@@ -92,7 +93,10 @@ router.post('/enter', async (req, res) => {
                     return console.log(result);
                 })
             }
-        });
+        })} catch (err) {
+            res.status(500).send(err.message);
+            return;
+        }
     }
     
     // Example usage
