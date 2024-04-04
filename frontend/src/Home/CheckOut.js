@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 import { ArrowRight } from 'react-bootstrap-icons';
 import { Button, Modal } from 'react-bootstrap';
 import axios from 'axios';
@@ -9,7 +8,6 @@ const CheckOutButton = () => {
     const [plateNumber, setPlateNumber] = useState("");
     const [method, setMethod] = useState("");
     const [gate, setGate] = useState("");
-    const navigate = useNavigate();
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
@@ -28,7 +26,7 @@ const CheckOutButton = () => {
             alert(`${res.data.amount}$ is to be charged`);
             handleClose();
         }).catch(err => {
-            alert("An error occurred Checkout failed");
+            alert(`An error occurred Checkout failed ${err}`);
         });
 
     };
