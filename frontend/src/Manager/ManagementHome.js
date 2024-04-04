@@ -8,7 +8,7 @@ const ManagementHome = () => {
     }
 
     const handleStats = () => {
-        navigate('/managestats');
+        navigate('/managebranches');
     }
 
     return (
@@ -20,7 +20,7 @@ const ManagementHome = () => {
             <div className="d-flex flex-column align-items-center">
                 <div className="d-flex justify-content-around w-50 mb-5">
                     <button className="btn btn-primary rounded-pill px-5 py-3" onClick={handleEmployees}>Manage Employees</button>
-                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={handleStats}>View Statistics</button>
+                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={handleStats}>Manage Branches</button>
                 </div>
                 <div className="d-flex justify-content-around w-50">
                     <button className="btn btn-primary rounded-pill px-5 py-3">Button 3</button>

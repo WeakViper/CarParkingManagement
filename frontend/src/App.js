@@ -7,7 +7,7 @@ import SelectParkingLot from './Home/SelectParkingLot';
 import Viewreservations from './LandingPage/ViewReservations';
 import ManagementHome from './Manager/ManagementHome';
 import ManageEmployees from './Manager/ManageEmployees';
-import ManageStats from './Manager/ManageStats';
+import ManageBranches from './Manager/ManageBranches';
 
 function App() {
   return (
@@ -37,7 +37,7 @@ function App() {
       </Routes>
 
       <Routes>
-        <Route path="/managestats" element={<ManageStats />} />
+        <Route path="/managebranches" element={<ManageBranches />} />
       </Routes>
     </Router>
   );

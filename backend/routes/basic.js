@@ -21,29 +21,73 @@ db.connect((err) => {
 
 router.post('/gettowers', (req, res) => {
     let query = 'SELECT TowerID FROM Tower WHERE BranchID = ?'
-    db.query(query, [req.body.branchid], (err, rows) => {
-        if (err) {
+    try{
+        db.query(query, [req.body.branchid], (err, rows) => {
+            if (err) {
+                res.status(500).send(err.message);
+                return;
+            }
+            res.send(rows);
+        });} catch (err) {
+            console.log(err);
             res.status(500).send(err.message);
             return;
         }
-        res.send(rows);
-    });
 });
 
 router.post('/getbranches', (req, res) => {
     let query = 'SELECT BranchID FROM BranchClient'
-    db.query(query, (err, rows) => {
-        if (err) {
-            res.status(500).send(err.message);
-            return;
-        }
-        res.send(rows);
-    });
+    try{
+        db.query(query, (err, rows) => {
+            if (err) {
+                res.status(500).send(err.message);
+                return;
+            }
+            res.send(rows);
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
+});
+
+router.post('/getbranchescomplete', (req, res) => {
+    let query = 'SELECT * FROM BranchClient'
+
+    try{
+        db.query(query, (err, rows) => {
+            if (err) {
+                res.status(500).send(err.message);
+                return;
+            }
+            res.send(rows);
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
+});
+
+router.post('/getemployees', (req, res) => {
+    let query = 'SELECT * FROM Staff'
+    try{
+        db.query(query, (err, rows) => {
+            if (err) {
+                res.status(500).send(err.message);
+                return;
+            }
+            res.send(rows);
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
 });
 
 
 router.post('/getslot', (req, res) => {
     let query = 'SELECT ParkingSlotID, ParkingZoneID FROM Occupy WHERE plateNumber = ?'
+    try{
     db.query(query, [req.body.plateNumber], (err, response) => {
         if (err) {
             res.json({
@@ -62,29 +106,23 @@ router.post('/getslot', (req, res) => {
                 zoneID: response[0].ParkingZoneID
             });
         }
-    });
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
 });
 
 
 //Delete Query
 router.post('/deletebranch', (req, res) => {
     let query = 'DELETE FROM BranchClient WHERE BranchID = ?'
-    db.query(query, [req.body.branchID], (err, res) => {
+    db.query(query, [req.body.branchID], (err, reponse) => {
         if (err) {
             res.status(500).send(err.message);
             return;
         }
-        if (res.body.length == 0) {
-            res.json({
-                message: "None"
-            });
-        } else {
-            res.json({
-                message: "Success",
-                slotID: res[0].ParkingSlotID,
-                zoneID: res[0].ParkingZoneID
-            });
-        }
+        res.send("Branch Deleted Successfully");
     });
 });
 
