@@ -114,7 +114,7 @@ router.post('/getslot', (req, res) => {
 });
 
 
-//Delete Query
+//Delete Query to delete a branch and cascade
 router.post('/deletebranch', (req, res) => {
     let query = 'DELETE FROM BranchClient WHERE BranchID = ?'
     db.query(query, [req.body.branchID], (err, reponse) => {
@@ -126,73 +126,87 @@ router.post('/deletebranch', (req, res) => {
     });
 });
 
-//Update query
+//Update query to update the staff table
 router.post('/updatestaff', (req, res) => {
-    let query = 'SELECT * FROM Staff WHERE EmployeeID = ?'
-    db.query(query, [req.body.employeeID], (err, res) => {
-        if (err) {
-            res.error(err.message);
-            return;
-        }
         let query2 = `UPDATE Staff 
         SET FullName = ?, email = ?, Telephone = ?, BranchID = ?, Shift = ?, StartDate = ? 
         WHERE EmployeeID = ?;`
         const values = [req.body.fullName, req.body.email, req.body.telephone, req.body.branchID, req.body.shift, req.body.startDate, req.body.employeeID]
-        db.query(query2, values, (err, res) => {
+        console.log(values);
+        try{
+        db.query(query2, values, (err, result) => {
             if (err) {
                 res.status(500).send(err.message);
                 return;
             }
-        });
-    });
+            res.send("Employee Updated Successfully");
+        })} catch (err) {
+            console.log(err);
+            res.status(500).send(err.message);
+            return;
+        }
 });
 
-//Aggregation query
+//Aggregation query to count how many times specific plate number has entered
 router.post('/countentries', (req, res) => {
     let query = `SELECT PlateNumber, COUNT(*) AS entries FROM Enters
     GROUP BY PlateNumber;`
+    try{
     db.query(query, (err, response) => {
         if (err) {
             res.status(500).send(err.message);
             return;
         }
         res.send(response);
-    });
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
 });
 
 
-// Nested Aggregation query
+// Nested Aggregation query to find the busiest gate
 router.post('/busiestgate', (req, res) => {
-    let query = `SELECT ExitGateID 
+    let query = `SELECT ExitGateID, COUNT(*) AS exits
     FROM Exits
     GROUP BY ExitGateID 
-    HAVING COUNT(*) >= (
+    HAVING COUNT(*) >= ALL (
         SELECT COUNT(*)
         FROM Exits e
-        GROUP BY e.ExitGateID
-    );`
+        GROUP BY e.ExitGateID);`
+    try{
     db.query(query, (err, response) => {
         if (err) {
             res.status(500).send(err.message);
             return;
         }
         res.send(response);
-    });
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
 });
 
-//Having Aggregation query
+//Having Aggregation query to find total amount of payments made by each method over certain amount
 router.post('/methodamt', (req, res) => {
-    let query = `SELECT Method, SUM(Amount)
+    let query = `SELECT Method, SUM(Amount) AS total
     FROM Payment p
     GROUP BY Method
     HAVING SUM(Amount) > ?;`
+    try{
     db.query(query, [req.body.amount], (err, response) => {
         if (err) {
             res.status(500).send(err.message);
             return;
         }
         res.send(response);
-    });
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
 });
 
 //Join Query
@@ -202,13 +216,18 @@ router.post('/gatewithamt', (req, res) => {
     WHERE e.PlateNumber = p.PlateNumber
     GROUP BY e.ExitGateID 
     HAVING SUM(p.Amount) > ?;`
+    try{
     db.query(query, [req.body.amount], (err, response) => {
         if (err) {
             res.status(500).send(err.message);
             return;
         }
         res.send(response);
-    });
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
 });
 
 //Divison Query
@@ -223,13 +242,18 @@ router.post('/gatewithmethod', (req, res) => {
         from Payment p3
         WHERE p3.ExitGateID = p1.ExitGateID
     );`
+    try {
     db.query(query, (err, response) => {
         if (err) {
             res.status(500).send(err.message);
             return;
         }
         res.send(response);
-    });
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
 });
 
 

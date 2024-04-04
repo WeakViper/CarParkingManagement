@@ -8,6 +8,9 @@ import Viewreservations from './LandingPage/ViewReservations';
 import ManagementHome from './Manager/ManagementHome';
 import ManageEmployees from './Manager/ManageEmployees';
 import ManageBranches from './Manager/ManageBranches';
+import CountByPlate from './Manager/CountByPlate';
+import BusiestGate from './Manager/BusiestGate';
+import MethodAmount from './Manager/MethodAmount';
 
 function App() {
   return (
@@ -38,6 +41,18 @@ function App() {
 
       <Routes>
         <Route path="/managebranches" element={<ManageBranches />} />
+      </Routes>
+
+      <Routes>
+        <Route path="/countbyplate" element={<CountByPlate />} />
+      </Routes>
+
+      <Routes>
+        <Route path="/busiestgate" element={<BusiestGate />} />
+      </Routes>
+
+      <Routes>
+        <Route path="/methodamount" element={<MethodAmount />} />
       </Routes>
     </Router>
   );

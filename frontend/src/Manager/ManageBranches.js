@@ -1,5 +1,4 @@
 import { Button, Card, ListGroup, Spinner } from "react-bootstrap";
-import { useNavigate } from 'react-router-dom';
 import HomeNavbar from "../Home/HomeNavBar";
 import { useState, useEffect } from "react";
 import axios from 'axios';
@@ -7,7 +6,6 @@ import axios from 'axios';
 const ManageBranches = () => {
     const [loading, setLoading] = useState(true);
     const [branches, setBranches] = useState([]);
-    const navigate = useNavigate();
     useEffect(() => {
         const getBranches = async () => {
             try {
@@ -49,7 +47,7 @@ const ManageBranches = () => {
     return (
         <div className="ManageEmp">
             <HomeNavbar sticky = "top" exact/>
-            <h2 className="m-5" style={{color: "black", fontWeight: "bold"}}> Statistics Per Outlet </h2>
+            <h2 className="m-5" style={{color: "black", fontWeight: "bold"}}> Manage Branches </h2>
             <div className="line-separator mb-5" style={{borderTop: "2px solid black", width: "90%", marginLeft: "5%", marginRight: "5%"}}></div>
             <div className="d-flex flex-column align-items-center">
                 {branches.map(outlet => (

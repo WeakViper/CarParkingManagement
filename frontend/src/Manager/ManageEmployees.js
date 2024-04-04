@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import HomeNavbar from "../Home/HomeNavBar";
 import { Card, ListGroup, Button, Spinner, Modal } from 'react-bootstrap';
-import AddEmployeesButton from './AddEmployeesButton';
 import axios from 'axios';
 import { Form } from 'react-bootstrap';
 
@@ -9,12 +8,12 @@ const ManageEmployees = () => {
     const [employees, setEmployees] = useState([]);
     const [loading, setLoading] = useState(true);
     const [employeeDetails, setEmployeeDetails] = useState({
-        FullName: '',
+        fullName: '',
         email: '',
-        Telephone: '',
-        BranchID: '',
-        Shift: '',
-        StartDate: ''
+        telephone: '',
+        branchID: '',
+        shift: '',
+        startDate: ''
     });
     const [show, setShow] = useState(false);
     const [selectedEmployee, setSelectedEmployee] = useState(null);
@@ -93,7 +92,7 @@ const ManageEmployees = () => {
                                 <ListGroup.Item>Phone: {employee.Telephone}</ListGroup.Item>
                                 <ListGroup.Item>Email: {employee.email}</ListGroup.Item>
                             </ListGroup>
-                            <Button variant="danger" onClick={() => handleShow(employee)}>Update details</Button>
+                            <Button variant="primary" onClick={() => handleShow(employee)}>Update details</Button>
                         </Card.Body>
                     </Card>
                 ))}
@@ -106,7 +105,7 @@ const ManageEmployees = () => {
                     <Form onSubmit={handleSubmit}>
                         <Form.Group controlId="formFullName">
                             <Form.Label>Full Name</Form.Label>
-                            <Form.Control type="text" name="FullName" value={employeeDetails.FullName} onChange={handleInputChange} />
+                            <Form.Control type="text" name="fullName" value={employeeDetails.fullName} onChange={handleInputChange} />
                         </Form.Group>
                         <Form.Group controlId="formEmail">
                             <Form.Label>Email</Form.Label>
@@ -114,19 +113,19 @@ const ManageEmployees = () => {
                         </Form.Group>
                         <Form.Group controlId="formTelephone">
                             <Form.Label>Telephone</Form.Label>
-                            <Form.Control type="text" name="Telephone" value={employeeDetails.Telephone} onChange={handleInputChange} />
+                            <Form.Control type="text" name="telephone" value={employeeDetails.telephone} onChange={handleInputChange} />
                         </Form.Group>
                         <Form.Group controlId="formBranchID">
                             <Form.Label>Branch ID</Form.Label>
-                            <Form.Control type="text" name="BranchID" value={employeeDetails.BranchID} onChange={handleInputChange} />
+                            <Form.Control type="text" name="branchID" value={employeeDetails.branchID} onChange={handleInputChange} />
                         </Form.Group>
                         <Form.Group controlId="formShift">
                             <Form.Label>Shift</Form.Label>
-                            <Form.Control type="text" name="Shift" value={employeeDetails.Shift} onChange={handleInputChange} />
+                            <Form.Control type="text" name="shift" value={employeeDetails.shift} onChange={handleInputChange} />
                         </Form.Group>
                         <Form.Group controlId="formStartDate" className='pb-4'>
                             <Form.Label>Start Date</Form.Label>
-                            <Form.Control type="date" name="StartDate" value={employeeDetails.StartDate} onChange={handleInputChange} />
+                            <Form.Control type="date" name="startDate" value={employeeDetails.startDate} onChange={handleInputChange} />
                         </Form.Group>
                         <Button variant="primary" type="submit">Submit</Button>
                     </Form>

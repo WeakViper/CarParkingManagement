@@ -1,14 +1,44 @@
 import HomeNavbar from "../Home/HomeNavBar";
 import { useNavigate } from "react-router-dom";
+import { Modal, Button, Form } from 'react-bootstrap';
+import { useState } from "react";
 
 const ManagementHome = () => {
     const navigate = useNavigate();
+    const [show, setShow] = useState(false);
+    const [minAmount, setMinAmount] = useState('');
+
+    const handleClose1 = () => setShow(false);
+    const handleShow1 = () => setShow(true);
+
+    const handleInputChange1 = (event) => {
+        setMinAmount(event.target.value);
+    }
+
+    const handleSubmit1 = (event) => {
+        event.preventDefault();
+        navigate('/methodamount', { state: { amount: minAmount } });
+        handleClose1();
+    }
+
     const handleEmployees = () => {
         navigate('/manageemployees');
     }
 
     const handleStats = () => {
         navigate('/managebranches');
+    }
+
+    const BusiestExit = () => {
+        navigate('/busiestgate');
+    }
+
+    const EntriesByPlate = () => {
+        navigate('/countbyplate');
+    }
+
+    const MethodTotal = () => {
+        handleShow1();
     }
 
     return (
@@ -22,11 +52,31 @@ const ManagementHome = () => {
                     <button className="btn btn-primary rounded-pill px-5 py-3" onClick={handleEmployees}>Manage Employees</button>
                     <button className="btn btn-primary rounded-pill px-5 py-3" onClick={handleStats}>Manage Branches</button>
                 </div>
+
                 <div className="d-flex justify-content-around w-50">
-                    <button className="btn btn-primary rounded-pill px-5 py-3">Button 3</button>
-                    <button className="btn btn-primary rounded-pill px-5 py-3">Button 4</button>
+                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={BusiestExit}>Busiest Exit</button>
+                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={EntriesByPlate}>Entries By Plate#</button>
+                </div>
+
+                <div className="d-flex justify-content-around w-50 m-5">
+                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={MethodTotal}>Total By Method</button>
+                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={EntriesByPlate}>Entries By Plate#</button>
                 </div>
             </div>
+            <Modal show={show} onHide={handleClose1}>
+                <Modal.Header closeButton>
+                    <Modal.Title>Enter Minimum Amount</Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Form onSubmit={handleSubmit1}>
+                        <Form.Group controlId="formMinAmount" className="pb-3">
+                            <Form.Label>Minimum Amount</Form.Label>
+                            <Form.Control type="number" value={minAmount} onChange={handleInputChange1} />
+                        </Form.Group>
+                        <Button variant="primary" type="submit">Submit</Button>
+                    </Form>
+                </Modal.Body>
+            </Modal>
         </div>
     );
 }
