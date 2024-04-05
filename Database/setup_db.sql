@@ -4,13 +4,13 @@
 - The second section is comprised of the corresponding insert statements.
 */
 
-CREATE DATABASE cpms_db;
-USE cpms_db;
+CREATE DATABASE cpms_db_2;
+USE cpms_db_2;
 
 DROP TABLE IF EXISTS Occupy;
 DROP TABLE IF EXISTS Exits;
 DROP TABLE IF EXISTS ParkingSlot;
-DROP TABLE IF EXISTS TypeSlots;
+/* DROP TABLE IF EXISTS TypeSlots; */
 DROP TABLE IF EXISTS ParkingZone;
 DROP TABLE IF EXISTS Tower;
 DROP TABLE IF EXISTS Staff;
@@ -117,7 +117,7 @@ C: Superblock with both commercial and residential zones
 
 CREATE TABLE BranchClient (
     BranchID VARCHAR(255) NOT NULL,
-    ClientName VARCHAR(255),
+    ClientName VARCHAR(255) NOT NULL,
     ClientType CHAR(1),
     PRIMARY KEY (BranchID)
 );
@@ -149,11 +149,12 @@ CREATE TABLE Staff (
 -- Tower Table (Entity)
 /* Added new TowerID */
 CREATE TABLE Tower (
-    TowerID VARCHAR (8) NOT NULL,
+    TowerID VARCHAR(8) NOT NULL,
     Address VARCHAR(255) NOT NULL,
     Zip CHAR(6) NOT NULL,
     TowerTotalSlots INT,
     -- RemainingSlots INT, Removed this, as it makes more sense to be a view
+    -- FilledSlots INT, This should be a view instead
     BranchID VARCHAR(12),
     PRIMARY KEY (TowerID),
     FOREIGN KEY (BranchID) REFERENCES BranchClient(BranchID) ON DELETE CASCADE
@@ -164,20 +165,24 @@ CREATE TABLE Tower (
 CREATE TABLE ParkingZone (
     ParkingZoneID INT NOT NULL,
     ParkingZoneType INT NOT NULL,
+    -- RemainingSlots INT, Removed this, as it makes more sense to be a view
     -- FilledSlots INT, This should be a view instead
-    -- ZoneTotalSlots INT, Removed this, as we have it in a normalized table
+    ZoneTotalSlots INT,
     TowerID VARCHAR(8),
     PRIMARY KEY (ParkingZoneID, ParkingZoneType),
     FOREIGN KEY (TowerID) REFERENCES Tower(TowerID) ON DELETE CASCADE
 );
 
+/*
+-- We decided to add this as an attribute ZoneTotalSlots in ParkingZone instead
+-- It actually saves data and it's more convenient
 -- TypeSlots Table (Not in ERD)
 CREATE TABLE TypeSlots (
     ParkingZoneID INT,
     TotalSlots INT,
     PRIMARY KEY (ParkingZoneID),
     FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID) ON DELETE CASCADE
-);
+); */
 
 /* SHOULD BE PARKING SLOT COMPRISES */
 -- TODO: ParkingSlot Table (Weak Entity Set)
