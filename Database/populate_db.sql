@@ -1,5 +1,5 @@
 -- SECTION 2: INSERT STATEMENTS
-USE cpms_db_2;
+USE cpms_db;
 
 -- VehicleClass Table (45 Entries)
 -- A is for Private, B is for Heavy, C is for Maintenance

@@ -4,8 +4,8 @@
 - The second section is comprised of the corresponding insert statements.
 */
 
-CREATE DATABASE cpms_db_2;
-USE cpms_db_2;
+CREATE DATABASE cpms_db;
+USE cpms_db;
 
 DROP TABLE IF EXISTS Occupy;
 DROP TABLE IF EXISTS Exits;
@@ -35,7 +35,7 @@ CREATE TABLE VehicleClass (
     PRIMARY KEY (PlateNumber)
 );
 
--- WeightRate Table (BCNF Product)
+-- WeightRate Table (Reference)
 CREATE TABLE WeightRate (
     WeightClass CHAR(1),
     HourlyRate INT,
@@ -169,13 +169,13 @@ CREATE TABLE ParkingZone (
     -- FilledSlots INT, This should be a view instead
     ZoneTotalSlots INT,
     TowerID VARCHAR(8),
-    PRIMARY KEY (ParkingZoneID, ParkingZoneType),
+    PRIMARY KEY (ParkingZoneID), -- Removed ParkingZoneType from primary key
     FOREIGN KEY (TowerID) REFERENCES Tower(TowerID) ON DELETE CASCADE
 );
 
 /*
 -- We decided to add this as an attribute ZoneTotalSlots in ParkingZone instead
--- It actually saves data and it's more convenient
+-- It actually saves data and it's less redundant
 -- TypeSlots Table (Not in ERD)
 CREATE TABLE TypeSlots (
     ParkingZoneID INT,
@@ -184,8 +184,7 @@ CREATE TABLE TypeSlots (
     FOREIGN KEY (ParkingZoneID) REFERENCES ParkingZone(ParkingZoneID) ON DELETE CASCADE
 ); */
 
-/* SHOULD BE PARKING SLOT COMPRISES */
--- TODO: ParkingSlot Table (Weak Entity Set)
+-- ParkingSlot Table (Weak Entity Set, a.k.a ParkingSlotsComprises)
 CREATE TABLE ParkingSlot (
     ParkingSlotID VARCHAR(8),
     ParkingZoneID INT,
