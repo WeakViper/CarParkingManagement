@@ -371,4 +371,29 @@ router.post('/selectattributes', (req, res) => {
     }
 });
 
+//Selection query on staff table
+router.post('/selectstaff', (req, res) => {
+    const { whereClause } = req.body;
+    if (!whereClause || typeof whereClause !== 'string') {
+        res.status(400).send('Invalid request body');
+        return;
+    }
+
+    const query = `SELECT * FROM Staff WHERE ${whereClause};`;
+
+    try {
+        db.query(query, (err, response) => {
+            if (err) {
+                res.status(500).send(err.message);
+                return;
+            }
+            res.send(response);
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
+});
+
 module.exports = router;

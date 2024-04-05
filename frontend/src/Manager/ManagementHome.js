@@ -53,6 +53,10 @@ const ManagementHome = () => {
         navigate('/projectontable')
     }
 
+    const SelectStaff = () => {
+        navigate('/selectstaff')
+    }
+
     return (
         <div className="management-home">
             <HomeNavbar sticky="top" exact/>
@@ -84,6 +88,9 @@ const ManagementHome = () => {
                     </div>
                     <div className="col-md-6 mb-4">
                         <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={ProjectOnTable}>Project On Any Table</button>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                        <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={SelectStaff}>Selection On Staff</button>
                     </div>
                 </div>
             </div>

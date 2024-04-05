@@ -15,6 +15,7 @@ import ClientSlots from './Manager/ClientSlotsTotal';
 import GateAllPayments from './Manager/GateAllPayments';
 import ProjectOnTable from './Manager/ProjectOnTable';
 import ViewProjectedTable from './Manager/ViewProjectedTable';
+import SelectOnStaff from './Manager/SelectOnStaff';
 
 function App() {
   return (
@@ -73,6 +74,10 @@ function App() {
 
       <Routes>
         <Route path="/viewprojectedtable" element={<ViewProjectedTable />} />
+      </Routes>
+
+      <Routes>
+        <Route path="/selectstaff" element={<SelectOnStaff />} />
       </Routes>
 
     </Router>

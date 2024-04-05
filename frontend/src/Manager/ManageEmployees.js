@@ -96,7 +96,7 @@ const ManageEmployees = () => {
                             <ListGroup variant="flush">
                                 <ListGroup.Item>ID: {employee.EmployeeID}</ListGroup.Item>
                                 <ListGroup.Item>Phone: {employee.Telephone}</ListGroup.Item>
-                                <ListGroup.Item>Email: {employee.email}</ListGroup.Item>
+                                <ListGroup.Item>Email: {employee.Email}</ListGroup.Item>
                             </ListGroup>
                             <Button variant="primary" onClick={() => handleShow(employee)}>Update details</Button>
                         </Card.Body>
