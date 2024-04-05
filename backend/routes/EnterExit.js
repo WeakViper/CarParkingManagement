@@ -169,6 +169,10 @@ router.post('/enter', async (req, res) => {
                     return;
                 } else {
                     console.log(result);
+                    if (result.length == 0) {
+                        res.status(500).send("No available parking zones In selected tower and zone type.");
+                        return;
+                    }
                     resolve(result[0].ParkingZoneID);
                 }
             })
