@@ -205,6 +205,10 @@ router.post('/enter', async (req, res) => {
                 if (err) {
                     reject(err.message);
                 } else {
+                    if (result.length == 0) {
+                        res.status(500).send("No available parking slots In selected tower and zone type.");
+                        return;
+                    }
                     resolve(result[0].ParkingSlotID);
                 }
             })} catch (err) {
