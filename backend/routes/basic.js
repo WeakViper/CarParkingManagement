@@ -289,6 +289,23 @@ router.post('/verify', (req, res) => {
     }
 });
 
+//All Table names
+router.post('/alltables', (req, res) => {
+    let query = `SHOW TABLES;`
+    try {
+    db.query(query, (err, response) => {
+        if (err) {
+            res.status(500).send(err.message);
+            return;
+        }
+        res.send(response);
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
+});
+
 
 
 module.exports = router;

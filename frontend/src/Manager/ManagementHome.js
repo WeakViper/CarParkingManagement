@@ -49,6 +49,9 @@ const ManagementHome = () => {
         navigate('/supportedgates')
     }
 
+    const ProjectOnTable = () => {
+        navigate('/projectontable')
+    }
     return (
         <div className="management-home">
             <HomeNavbar sticky = "top" exact/>
@@ -72,6 +75,9 @@ const ManagementHome = () => {
                 </div>
                 <div className="d-flex justify-content-around w-50">
                     <button className="btn btn-primary rounded-pill px-5 py-3" onClick={SupportedGates}>Gates With All Payment Methods</button>
+                </div>
+                <div className="d-flex justify-content-around w-50">
+                    <button className="btn btn-primary rounded-pill px-5 m-5 py-3" onClick={ProjectOnTable}>Project On Any Table</button>
                 </div>
             </div>
             <Modal show={show} onHide={handleClose1}>

@@ -13,6 +13,7 @@ import BusiestGate from './Manager/BusiestGate';
 import MethodAmount from './Manager/MethodAmount';
 import ClientSlots from './Manager/ClientSlotsTotal';
 import GateAllPayments from './Manager/GateAllPayments';
+import ProjectOnTable from './Manager/ProjectOnTable';
 
 function App() {
   return (
@@ -64,6 +65,11 @@ function App() {
       <Routes>
         <Route path="/supportedgates" element={<GateAllPayments />} />
       </Routes>
+
+      <Routes>
+        <Route path="/projectontable" element={<ProjectOnTable />} />
+      </Routes>
+
     </Router>
   );
 }
