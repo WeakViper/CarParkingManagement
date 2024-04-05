@@ -45,14 +45,14 @@ CREATE TABLE WeightRate (
 -- EntryGate Table (Entity)
 CREATE TABLE EntryGate (
     EntryGateID INT NOT NULL,
-    StatusIsActive BOOLEAN,
+    StatusIsActive INT NOT NULL,
     PRIMARY KEY (EntryGateID)
 );
 
 -- ExitGate Table (Entity)
 CREATE TABLE ExitGate (
     ExitGateID INT NOT NULL,
-    StatusIsActive BOOLEAN,
+    StatusIsActive INT NOT NULL,
     PRIMARY KEY (ExitGateID)
 );
 
