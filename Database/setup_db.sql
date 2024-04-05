@@ -75,7 +75,7 @@ CREATE TABLE HeavyDuty (
 -- Maintenance Table (ISA Sub Entity)
 CREATE TABLE Maintenance (
     PlateNumber VARCHAR(10) NOT NULL,
-    WorkOrderID VARCHAR(12),
+    WorkOrderID VARCHAR(12) NOT NULL, -- There must be a valid work order
     PRIMARY KEY (PlateNumber),
     FOREIGN KEY (PlateNumber) REFERENCES VehicleClass(PlateNumber)
 );
@@ -129,7 +129,7 @@ CREATE TABLE Staff (
     EmployeeID INT NOT NULL,
     FullName VARCHAR(255),
     Telephone CHAR(10),
-    email VARCHAR(255) UNIQUE,
+    Email VARCHAR(255) UNIQUE,
     Shift VARCHAR(255),
     StartDate DATE,
     BranchID VARCHAR(12),
