@@ -107,16 +107,25 @@ CREATE TABLE Enters (
 );
 
 -- BranchClient Table
-/* In the original ERD Diagram there is ParkingCap but we removed it */
+
+/* 
+Assume the following specification for ClientTypes
+A: Shopping malls
+B: Apartment buildings
+C: Superblock with both commercial and residential zones
+*/
+
 CREATE TABLE BranchClient (
-    BranchID VARCHAR(12) NOT NULL,
+    BranchID VARCHAR(255) NOT NULL,
     ClientName VARCHAR(255),
     ClientType CHAR(1),
     PRIMARY KEY (BranchID)
 );
 
 /*
--- TODO: BranchCap Table
+-- We decided to make this a view instead, in order not to duplicate data
+-- It's also not a frequently used functionality compared to other aspects of the application
+-- BranchCap Table
 CREATE TABLE BranchCap (
     ClientType CHAR(1),
     ParkingCap INT,
@@ -144,7 +153,7 @@ CREATE TABLE Tower (
     Address VARCHAR(255) NOT NULL,
     Zip CHAR(6) NOT NULL,
     TowerTotalSlots INT,
-    -- RemainingSlots INT, , This should be a view instead
+    -- RemainingSlots INT, Removed this, as it makes more sense to be a view
     BranchID VARCHAR(12),
     PRIMARY KEY (TowerID),
     FOREIGN KEY (BranchID) REFERENCES BranchClient(BranchID) ON DELETE CASCADE
@@ -156,7 +165,7 @@ CREATE TABLE ParkingZone (
     ParkingZoneID INT NOT NULL,
     ParkingZoneType INT NOT NULL,
     -- FilledSlots INT, This should be a view instead
-    ZoneTotalSlots INT,
+    -- ZoneTotalSlots INT, Removed this, as we have it in a normalized table
     TowerID VARCHAR(8),
     PRIMARY KEY (ParkingZoneID, ParkingZoneType),
     FOREIGN KEY (TowerID) REFERENCES Tower(TowerID) ON DELETE CASCADE
