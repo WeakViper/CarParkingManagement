@@ -18,7 +18,7 @@ const Navbar = () => {
               </div>
 
               <div class="mx-auto order-0 d-flex align-items-center">
-                <h1 className="ms-0 hw text-white fw-bold my-4" style={{ whiteSpace: 'nowrap' }}>Carhalla Parking Manager</h1>
+                <h1 className="ms-0 hw text-white fw-bold my-4" style={{ whiteSpace: 'nowrap' }}>Carhalla Parking</h1>
               </div>
       
               <div class="navbar-collapse collapse w-100 order-3 dual-collapse2">
