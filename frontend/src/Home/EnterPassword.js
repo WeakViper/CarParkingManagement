@@ -1,21 +1,26 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import HomeNavbar from './HomeNavBar';
+import axios from 'axios';
 
 function EnterPassword() {
     const navigate = useNavigate();
     const [password, setPassword] = useState('');
     const [error, setError] = useState('');
 
-    const savedPassword = '1234';
-
     const handleSubmit = (event) => {
         event.preventDefault();
-        if (password === savedPassword) {
-            navigate('/managementpanel'); // navigate to home page
-        } else {
-            setError('Incorrect password');
-        }
+        axios.post('http://localhost:3500/basic/verify', {password: password})
+            .then(result => {
+                if (parseInt(result.data)) {
+                    navigate('/managementpanel');
+                } else {
+                    setError('Incorrect password');
+                }
+            })
+            .catch(err => {
+                alert(`An error occurred: ${err}`);
+            });
     };
 
     return (

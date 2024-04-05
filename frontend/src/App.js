@@ -42,6 +42,10 @@ function App() {
       </Routes>
 
       <Routes>
+        <Route path="/methodamount" element={<MethodAmount />} />
+      </Routes>
+
+      <Routes>
         <Route path="/managebranches" element={<ManageBranches />} />
       </Routes>
 
@@ -51,10 +55,6 @@ function App() {
 
       <Routes>
         <Route path="/busiestgate" element={<BusiestGate />} />
-      </Routes>
-
-      <Routes>
-        <Route path="/methodamount" element={<MethodAmount />} />
       </Routes>
 
       <Routes>

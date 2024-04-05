@@ -1,12 +1,10 @@
 import Button from 'react-bootstrap/Button';
 import Modal from 'react-bootstrap/Modal';
 import Form from 'react-bootstrap/Form';
-import { useNavigate } from 'react-router-dom';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 
 function MakeReservationModal(props) {
-  const navigate = useNavigate();
   const [towers, setTowers] = useState([]);
 
   useEffect(() => {
@@ -50,7 +48,7 @@ function MakeReservationModal(props) {
       alert(`${response.data.parkingSlotID} has been assigned in Zone: ${response.data.zoneID}. Please Direct Accordingly.`);
       props.onHide();
     }).catch(error => {
-      alert(`An error occurred. Reservation failed ${error}`);
+      alert(`An error occurred. Reservation failed. Reason: ${error.response.data}`);
   })
   };
 

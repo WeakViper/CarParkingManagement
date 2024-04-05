@@ -17,8 +17,7 @@ const ParkingLots = () => {
                 setBranches(branchIds);
                 console.log(branchIds);
             } catch (error) {
-                console.error(error);
-                console.log("Error in getBranches");
+                alert(`Error fetching branches ${error}`);
             }
         }
         getBranches();

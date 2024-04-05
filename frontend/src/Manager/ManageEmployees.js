@@ -33,6 +33,12 @@ const ManageEmployees = () => {
 
     const handleSubmit = async (event) => {
         event.preventDefault();
+        const { fullName, email, telephone, branchID, shift, startDate } = employeeDetails;
+        if (!fullName || !email || !telephone || !branchID || !shift || !startDate) {
+            alert('Please fill in all fields before submitting');
+            return;
+        }
+    
         updateEmployee(selectedEmployee.EmployeeID);
         handleClose();
     }
@@ -45,7 +51,7 @@ const ManageEmployees = () => {
             window.location.reload();
         } catch (error) {
             console.error(error);
-            alert(`Error in updating employee ${error}`);
+            alert(`Error in updating employee ${error.response.data}`);
         }
     }
 

@@ -25,6 +25,29 @@ router.post('/enter', async (req, res) => {
     const values1 = [plateNumber, weightClass];
     console.log(plateNumber, weightClass, extra, entryGate, TowerID);
 
+    const checkEntry= async () => {
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM EntryGate WHERE EntryGateID = ? AND StatusIsActive = 1;", [entryGate], (err, result, fields) => {
+                if (err) {
+                    reject(err);
+                    return;
+                } else if (result.length == 0) {
+                    reject(new Error("Invalid Gate Number. Please enter a valid and active gate number."));
+                    return;
+                } else {
+                    resolve();
+                }
+            });
+        });
+    };
+    
+    try {
+        await checkEntry();
+    } catch (err) {
+        res.status(500).send(err.message);
+        return;
+    }
+
     async function checkPlateNumber (plateNumber) {
         const query = 'SELECT * FROM VehicleClass WHERE PlateNumber = ?';
         
@@ -99,7 +122,6 @@ router.post('/enter', async (req, res) => {
         }
     }
     
-    // Example usage
     await checkPlateNumber(plateNumber);
 
     let zone;
@@ -138,9 +160,9 @@ router.post('/enter', async (req, res) => {
     )
     LIMIT 1;`;
 
-    try{
     const getZoneId = async (zoneID) => {
         return new Promise((resolve, reject) => {
+            try{
             db.query(ZoneQuery, [TowerID, zone], (err, result, fields) => {
                 if (err) {
                     res.status(500).send(err.message);
@@ -150,11 +172,11 @@ router.post('/enter', async (req, res) => {
                     resolve(result[0].ParkingZoneID);
                 }
             })
-        });
-    }} catch (err) {
-        res.status(500).send(err.message);
-        return;
-    }
+        } catch (err) {
+            res.status(500).send(err.message);
+            return;
+        }
+    })}
 
     // Usage
     const zoneID = await getZoneId();
@@ -236,16 +258,41 @@ router.post('/enter', async (req, res) => {
 router.post('/exit', async (req, res) => {
     const { plateNumber, exitGate, method } = req.body;
 
+    const checkExit = async () => {
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM ExitGate WHERE ExitGateID = ? AND StatusIsActive = 1;", [exitGate], (err, result, fields) => {
+                if (err) {
+                    reject(err);
+                    return;
+                } else if (result.length == 0) {
+                    reject(new Error("Invalid Gate Number. Please enter a valid and active gate number."));
+                    return;
+                } else {
+                    resolve();
+                }
+            });
+        });
+    };
+    
+    try {
+        await checkExit();
+    } catch (err) {
+        res.status(500).send(err.message);
+        return;
+    }
+
     const getSlot = async (plateNumber) => {
         return new Promise((resolve, reject) => {
             try {
             db.query("SELECT ParkingSlotID FROM Occupy WHERE PlateNumber = ? LIMIT 1", [plateNumber], (err, result, fields) => {
                 if (err) {
-                    reject(err.message);
-                } else {
-                    console.log(result);
-                    console.log(result[0]);
+                    res.status(500).send(err.message);
+                    return;
+                } else if (result[0]) {
                     resolve(result[0].ParkingSlotID);
+                } else {
+                    res.status(500).send("Plate number does not exist in table and is not currently parked.");
+                    return;
                 }
             })} catch (err) {
                 res.status(500).send(err.message);

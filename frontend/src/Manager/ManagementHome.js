@@ -7,19 +7,10 @@ const ManagementHome = () => {
     const navigate = useNavigate();
     const [show, setShow] = useState(false);
     const [minAmount, setMinAmount] = useState('');
-    const [minAmount2, setMinAmount2] = useState('');
 
     const handleClose1 = () => setShow(false);
     const handleShow1 = () => setShow(true);
-
-    const handleClose2 = () => setShow(false);
-    const handleShow2 = () => setShow(true);
-
     const handleInputChange1 = (event) => {
-        setMinAmount(event.target.value);
-    }
-
-    const handleInputChange2 = (event) => {
         setMinAmount(event.target.value);
     }
 
@@ -29,11 +20,6 @@ const ManagementHome = () => {
         handleClose1();
     }
 
-    const handleSubmit2 = (event) => {
-        event.preventDefault();
-        navigate('/gatewithamt', { state: { amount: minAmount2 } });
-        handleClose1();
-    }
 
     const handleEmployees = () => {
         navigate('/manageemployees');
@@ -95,23 +81,8 @@ const ManagementHome = () => {
                 <Modal.Body>
                     <Form onSubmit={handleSubmit1}>
                         <Form.Group controlId="formMinAmount" className="pb-3">
-                            <Form.Label>Minimum Amount</Form.Label>
+                            <Form.Label>Minimum Amount 1</Form.Label>
                             <Form.Control type="number" value={minAmount} onChange={handleInputChange1} />
-                        </Form.Group>
-                        <Button variant="primary" type="submit">Submit</Button>
-                    </Form>
-                </Modal.Body>
-            </Modal>
-
-            <Modal show={show} onHide={handleClose2}>
-                <Modal.Header closeButton>
-                    <Modal.Title>Enter Minimum Amount</Modal.Title>
-                </Modal.Header>
-                <Modal.Body>
-                    <Form onSubmit={handleSubmit2}>
-                        <Form.Group controlId="formMinAmount" className="pb-3">
-                            <Form.Label>Minimum Amount</Form.Label>
-                            <Form.Control type="number" value={minAmount} onChange={handleInputChange2} />
                         </Form.Group>
                         <Button variant="primary" type="submit">Submit</Button>
                     </Form>

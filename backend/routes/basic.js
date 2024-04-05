@@ -127,24 +127,48 @@ router.post('/deletebranch', (req, res) => {
 });
 
 //Update query to update the staff table
-router.post('/updatestaff', (req, res) => {
-        let query2 = `UPDATE Staff 
-        SET FullName = ?, email = ?, Telephone = ?, BranchID = ?, Shift = ?, StartDate = ? 
-        WHERE EmployeeID = ?;`
-        const values = [req.body.fullName, req.body.email, req.body.telephone, req.body.branchID, req.body.shift, req.body.startDate, req.body.employeeID]
-        console.log(values);
-        try{
-        db.query(query2, values, (err, result) => {
-            if (err) {
-                res.status(500).send(err.message);
-                return;
-            }
-            res.send("Employee Updated Successfully");
-        })} catch (err) {
-            console.log(err);
+router.post('/updatestaff', async (req, res) => {
+
+    const checkBranch= async () => {
+        return new Promise((resolve, reject) => {
+            db.query("SELECT * FROM BranchClient WHERE BranchID = ?;", [req.body.branchID], (err, result, fields) => {
+                if (err) {
+                    reject(err);
+                    return;
+                } else if (result.length == 0) {
+                    reject(new Error("Invalid BranchId. Please enter a valid BranchId."));
+                    return;
+                } else {
+                    resolve();
+                }
+            });
+        });
+    };
+    
+    try {
+        await checkBranch();
+    } catch (err) {
+        res.status(500).send(err.message);
+        return;
+    }
+
+    let query2 = `UPDATE Staff 
+    SET FullName = ?, email = ?, Telephone = ?, BranchID = ?, Shift = ?, StartDate = ? 
+    WHERE EmployeeID = ?;`
+    const values = [req.body.fullName, req.body.email, req.body.telephone, req.body.branchID, req.body.shift, req.body.startDate, req.body.employeeID]
+    console.log(values);
+    try{
+    db.query(query2, values, (err, result) => {
+        if (err) {
             res.status(500).send(err.message);
             return;
         }
+        res.send("Employee Updated Successfully");
+    })} catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
 });
 
 //Aggregation query to count how many times specific plate number has entered
@@ -253,6 +277,15 @@ router.post('/gatewithmethod', (req, res) => {
         console.log(err);
         res.status(500).send(err.message);
         return;
+    }
+});
+
+//Verify password for manager login
+router.post('/verify', (req, res) => {
+    if (req.body.password === "0000") {
+        res.send("1");
+    } else {
+        res.send("0");
     }
 });
 

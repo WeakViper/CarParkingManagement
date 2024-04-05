@@ -10,16 +10,19 @@ const ViewPurchasesButton = () => {
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
 
-    const handleSubmit = () => {
-        axios.post('http://localhost:3500/basic/getslot', { plateNumber: plateNumber }).then((response) => {
+    const handleSubmit = async () => {
+        try {
+            const response = await axios.post('http://localhost:3500/basic/getslot', { plateNumber: plateNumber });
             if (response.data.message === "None") {
                 alert("No slot found for this plate number");
                 handleClose();
             } else {
-                alert(`Slot ID: ${response.data.slotID}, Zone ID: ${response.data.zoneID}`);
+                alert(`Found at Slot ID: ${response.data.slotID}, Zone ID: ${response.data.zoneID}`);
                 handleClose();
             }
-        });
+        } catch (err) {
+            alert(`An error occurred. ${err}`);
+        }
     };
 
     return (

@@ -26,7 +26,7 @@ const CheckOutButton = () => {
             alert(`${res.data.amount}$ is to be charged`);
             handleClose();
         }).catch(err => {
-            alert(`An error occurred Checkout failed ${err}`);
+            alert(`An error occurred Checkout failed. Reason: ${err.response.data}`);
         });
 
     };
