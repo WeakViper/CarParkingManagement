@@ -289,7 +289,7 @@ router.post('/verify', (req, res) => {
     }
 });
 
-//All Table names
+//For Projection: All Table names
 router.post('/alltables', (req, res) => {
     let query = `SHOW TABLES;`
     try {
@@ -307,5 +307,68 @@ router.post('/alltables', (req, res) => {
 });
 
 
+//For projection: All attributes of a given table
+router.post('/allattributes', async (req, res) => {
+    let tablesQuery = `SHOW TABLES;`
+    let columnsQuery = `SHOW COLUMNS FROM ${req.body.table};`
+    try {
+        // Get all tables
+        const tables = await new Promise((resolve, reject) => {
+            db.query(tablesQuery, (err, response) => {
+                if (err) {
+                    reject(err);
+                    return;
+                }
+                resolve(response.map(table => table.Tables_in_cpms_db));
+            });
+        });
+
+        // Check if table exists
+        if (!tables.includes(req.body.table)) {
+            res.status(400).send('Table does not exist');
+            return;
+        }
+
+        // Get columns
+        db.query(columnsQuery, (err, response) => {
+            if (err) {
+                res.status(500).send(err.message);
+                return;
+            }
+            const columnNames = response.map(column => column.Field);
+            res.send(columnNames);
+        })
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
+});
+
+//Projection on selected table with selected attributes
+router.post('/selectattributes', (req, res) => {
+    const { table, attributes } = req.body;
+    if (!table || !attributes || !Array.isArray(attributes) || attributes.some(attr => typeof attr !== 'string')) {
+        res.status(400).send('Invalid request body');
+        return;
+    }
+
+    const placeholders = attributes.map(() => '??').join(', ');
+    const query = `SELECT ${placeholders} FROM ??;`;
+
+    try {
+        db.query(query, [...attributes, table], (err, response) => {
+            if (err) {
+                res.status(500).send(err.message);
+                return;
+            }
+            res.send(response);
+        });
+    } catch (err) {
+        console.log(err);
+        res.status(500).send(err.message);
+        return;
+    }
+});
 
 module.exports = router;
