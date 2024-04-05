@@ -48,7 +48,11 @@ function MakeReservationModal(props) {
       alert(`${response.data.parkingSlotID} has been assigned in Zone: ${response.data.zoneID}. Please Direct Accordingly.`);
       props.onHide();
     }).catch(error => {
+      try{
       alert(`An error occurred. Reservation failed. Reason: ${error.response.data}`);
+      } catch (err) {
+        alert(`An error occurred. Reservation failed. Reason: ${error}`);
+      }
   })
   };
 
