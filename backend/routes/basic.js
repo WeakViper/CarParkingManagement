@@ -36,7 +36,7 @@ router.post('/gettowers', (req, res) => {
 });
 
 router.post('/getbranches', (req, res) => {
-    let query = 'SELECT BranchID FROM BranchClient'
+    let query = 'SELECT BranchID, ClientName FROM BranchClient'
     try{
         db.query(query, (err, rows) => {
             if (err) {

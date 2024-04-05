@@ -13,7 +13,7 @@ const ParkingLots = () => {
             try {
                 const response = await axios.post('http://localhost:3500/basic/getbranches');
                 console.log(response.data);
-                const branchIds = response.data.map(branch => branch.BranchID);
+                const branchIds = response.data;
                 setBranches(branchIds);
                 console.log(branchIds);
             } catch (error) {
@@ -47,8 +47,8 @@ const ParkingLots = () => {
                     <div className="col-lg-3 col-md-6 mx-4 my-4" key={index}>
                         <div className="card text-center border-dark bg-light py-4" style={{width: "18rem", borderRadius: "20px"}}>
                             <div className="card-body">
-                                <h4 className="card-title p-3">{branch}</h4>
-                                <button onClick={() => handleClick(branch)} className="btn btn-primary mb-2 rounded-pill"> Check In Vehicle </button>
+                                <h4 className="card-title p-3">{branch.ClientName}</h4>
+                                <button onClick={() => handleClick(branch.BranchID)} className="btn btn-primary mb-2 rounded-pill"> Check In Vehicle </button>
                             </div>
                         </div>
                     </div>

@@ -52,34 +52,42 @@ const ManagementHome = () => {
     const ProjectOnTable = () => {
         navigate('/projectontable')
     }
+
     return (
         <div className="management-home">
-            <HomeNavbar sticky = "top" exact/>
+            <HomeNavbar sticky="top" exact/>
             <h2 className="m-5" style={{color: "black", fontWeight: "bold"}}> Management Panel </h2>
             <div className="line-separator mb-5" style={{borderTop: "2px solid black", width: "90%", marginLeft: "5%", marginRight: "5%"}}></div>
             
-            <div className="d-flex flex-column align-items-center">
-                <div className="d-flex justify-content-around w-50 mb-5">
-                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={handleEmployees}>Manage Employees</button>
-                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={handleStats}>Manage Branches</button>
-                </div>
-
-                <div className="d-flex justify-content-around w-50">
-                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={BusiestExit}>Busiest Exit</button>
-                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={EntriesByPlate}>Entries By Plate#</button>
-                </div>
-
-                <div className="d-flex justify-content-around w-50 m-5">
-                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={MethodTotal}>Total By Method</button>
-                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={GateTotal}>Slots Per Client</button>
-                </div>
-                <div className="d-flex justify-content-around w-50">
-                    <button className="btn btn-primary rounded-pill px-5 py-3" onClick={SupportedGates}>Gates With All Payment Methods</button>
-                </div>
-                <div className="d-flex justify-content-around w-50">
-                    <button className="btn btn-primary rounded-pill px-5 m-5 py-3" onClick={ProjectOnTable}>Project On Any Table</button>
+            <div className="container">
+                <div className="row">
+                    <div className="col-md-6 mb-4">
+                        <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={handleEmployees}>Manage Employees</button>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                        <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={handleStats}>Manage Branches</button>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                        <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={BusiestExit}>Find Busiest Exit Gate</button>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                        <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={EntriesByPlate}>How many times has every Plate# Entered</button>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                        <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={MethodTotal}>Total Revenue Per Method</button>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                        <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={GateTotal}>Total Parking slots with each client</button>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                        <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={SupportedGates}>Gates With All Payment Methods Used</button>
+                    </div>
+                    <div className="col-md-6 mb-4">
+                        <button className="btn btn-primary rounded-pill px-5 py-3 w-100" onClick={ProjectOnTable}>Project On Any Table</button>
+                    </div>
                 </div>
             </div>
+
             <Modal show={show} onHide={handleClose1}>
                 <Modal.Header closeButton>
                     <Modal.Title>Enter Minimum Amount</Modal.Title>
