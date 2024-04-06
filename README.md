@@ -66,22 +66,22 @@ Altered the key and participation constraint for the Pay relationship. We change
 
 Based on the above changes to the Entity Relationship Diagram, we also list the corresponding equivalent changes in our schema. The following is our updated schema for our tables. Note that bold means foreign key, and underlined means primary key.
 
-VehicleClass(PlateNumber: VARCHAR(10), WeightClass: CHAR(1)).
-WeightRate(WeightClass: CHAR(1), HourlyRate: INT).
-EntryGate(EntryGateID: INT, StatusIsActive: INT).
-ExitGate(ExitGateID: INT, StatusIsActive: INT).
-PrivateCar(PlateNumber: VARCHAR(10), Membership: VARCHAR(12)).
-HeavyDuty(PlateNumber: VARCHAR(10), CompanyName: VARCHAR(255)).
-Maintenance(PlateNumber: VARCHAR(10), CompanyName: WorkOrderID(12)).
-Payment(PaymentID: VARCHAR(255), Method: VARCHAR(255), Amount: FLOAT, PlateNumber: VARCHAR(10), ExitGateID: INT).
-Enters(DateTime: DATETIME, EntryGateID: INT, PlateNumber: VARCHAR(10)).
-BranchClient(BranchID: VARCHAR(12), ClientName: VARCHAR(255), ClientType: CHAR(1)).
-Staff(EmployeeID: INT, Fullname: VARCHAR(255), Telephone: CHAR(10), Email: VARCHAR(255), Shift: VARCHAR(255), StartDate: DATE, BranchID: VARCHAR(12)) Note that Email must be UNIQUE as it is a candidate key.
-Tower(TowerID: VARCHAR(8), Address: VARCHAR(255), Zip: CHAR(6), TowerTotalSlots: INT, BranchID: VARCHAR(12)).
-ParkingZone(ParkingZoneID: INT, ParkingZoneType: INT, ZoneTotalSlots: INT, TowerID: VARCHAR(8)).
-ParkingSlot(ParkingSlotID: VARCHAR(8), ParkingZoneID: INT).
-Exits(DateTime: DATETIME, ExitGateID: INT, PlateNumber: VARCHAR(10), ParkingZoneID: INT, ParkingSlotID: VARCHAR(8)).
-Occupy(ParkingSlotID: VARCHAR(8), ParkingZoneID: INT, PlateNumber: VARCHAR(10)).
+VehicleClass(PlateNumber: VARCHAR(10), WeightClass: CHAR(1)).  
+WeightRate(WeightClass: CHAR(1), HourlyRate: INT).  
+EntryGate(EntryGateID: INT, StatusIsActive: INT).  
+ExitGate(ExitGateID: INT, StatusIsActive: INT).  
+PrivateCar(PlateNumber: VARCHAR(10), Membership: VARCHAR(12)).  
+HeavyDuty(PlateNumber: VARCHAR(10), CompanyName: VARCHAR(255)).  
+Maintenance(PlateNumber: VARCHAR(10), CompanyName: WorkOrderID(12)).  
+Payment(PaymentID: VARCHAR(255), Method: VARCHAR(255), Amount: FLOAT, PlateNumber: VARCHAR(10), ExitGateID: INT).  
+Enters(DateTime: DATETIME, EntryGateID: INT, PlateNumber: VARCHAR(10)).  
+BranchClient(BranchID: VARCHAR(12), ClientName: VARCHAR(255), ClientType: CHAR(1)).  
+Staff(EmployeeID: INT, Fullname: VARCHAR(255), Telephone: CHAR(10), Email: VARCHAR(255), Shift: VARCHAR(255), StartDate: DATE, BranchID: VARCHAR(12)) Note that Email must be UNIQUE as it is a candidate key.  
+Tower(TowerID: VARCHAR(8), Address: VARCHAR(255), Zip: CHAR(6), TowerTotalSlots: INT, BranchID: VARCHAR(12)).  
+ParkingZone(ParkingZoneID: INT, ParkingZoneType: INT, ZoneTotalSlots: INT, TowerID: VARCHAR(8)).  
+ParkingSlot(ParkingSlotID: VARCHAR(8), ParkingZoneID: INT).  
+Exits(DateTime: DATETIME, ExitGateID: INT, PlateNumber: VARCHAR(10), ParkingZoneID: INT, ParkingSlotID: VARCHAR(8)).  
+Occupy(ParkingSlotID: VARCHAR(8), ParkingZoneID: INT, PlateNumber: VARCHAR(10)).  
 
 
 ## Additional Notes:
