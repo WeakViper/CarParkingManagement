@@ -10,4 +10,4 @@ This subdirectory contains the PDF format submissions that are required througho
 
 We have organized everything in this folder for the convenience of the teaching team.\
 
-The SQL scripts is at Database/init_db.sql
+The SQL script is at Database/init_db.sql
