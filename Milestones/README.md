@@ -8,4 +8,6 @@ This subdirectory contains the PDF format submissions that are required througho
 - Milestone 4: Project Implementation
 - Milestone 5: Group Demonstration
 
-We have organized everything in this folder for the convenience of the teaching team.
+We have organized everything in this folder for the convenience of the teaching team.\
+
+The SQL scripts is at Database/init_db.sql
